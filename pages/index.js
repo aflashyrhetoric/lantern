@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import Head from "next/head"
 import styles from "../styles/Home.module.css"
+import moment from "moment"
 
 import {
   DataTable,
@@ -17,10 +18,19 @@ import {
 export default function Home() {
   const [statuses, setStatuses] = useState([])
 
-  useEffect(async () => {
+  const [lastUpdated, setLastUpdated] = useState(Date.now())
+
+  const fetchData = async () => {
     const response = await fetch("http://localhost:3000/api/scour")
     const results = await response.json()
     setStatuses(results.statuses)
+  }
+
+  useEffect(async () => {
+    setInterval(function () {
+      fetchData()
+      setLastUpdated(Date.now())
+    }, 60 * 1000 * 5)
   }, [])
 
   const headers = [
@@ -49,8 +59,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Loading active={statuses.length == 0} />
-
+      <h2>
+        Last updated at:{" "}
+        {lastUpdated
+          ? moment(lastUpdated).format("dddd, MMMM Do YYYY, h:mm:ss a")
+          : "IDK"}
+      </h2>
       <main>
         {statuses && statuses.length > 0 && (
           <TableContainer>
