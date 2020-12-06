@@ -11,23 +11,24 @@ import {
 } from "../../shared"
 
 const getResponseBody = async (
-  page: ProductPage,
+  productPage: ProductPage,
 ): Promise<ProductPageStatus> => {
-  const resp = await got(page.url, options)
+  const resp = await got(productPage.url, options)
   console.log("Response retrieved and resolved successfully.")
   const body = resp.body
   const $ = cheerio.load(body)
 
-  let buttonText = $(page.cssSelector).text()
-  const soldOut = page.expectedText === buttonText && buttonText !== ""
+  const productName = $(productPage.vendor.nameSelector).text()
+  let buttonText = $(productPage.vendor.buttonSelector).text()
+  const soldOut = productPage.expectedText === buttonText && buttonText !== ""
 
   console.log(`Button text found: ${buttonText}`)
 
   return {
-    vendor: page.vendor,
+    name: productName,
     status: soldOut ? Stocked.SOLD_OUT : Stocked.IN_STOCK,
-    buttonText: buttonText,
-    link: page.url,
+    // buttonText: buttonText,
+    link: productPage.url,
   }
 }
 

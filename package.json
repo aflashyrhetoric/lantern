@@ -8,10 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@carbon/icons-react": "10.3.0",
-    "carbon-components": "10.3.0",
-    "carbon-components-react": "7.3.0",
-    "carbon-icons": "7.0.7",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
     "moment": "^2.29.1",
     "next": "10.0.3",
     "react": "17.0.1",

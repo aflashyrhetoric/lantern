@@ -1,25 +1,53 @@
-export enum Vendor {
-  BestBuy = "Best Buy",
+export type Vendor = {
+  name: string
+  nameSelector: string
+  buttonSelector: string
+}
+
+export enum VendorName {
+  BestBuy = "BestBuy",
   MicroCenter = "MicroCenter",
   NewEgg = "NewEgg",
   BHPhoto = "BHPhoto",
   Amazon = "Amazon",
 }
 
-const { BestBuy, MicroCenter, NewEgg, BHPhoto, Amazon } = Vendor
+const defVendor = (name, nameSelector, buttonSelector) => ({
+  name,
+  nameSelector,
+  buttonSelector,
+})
+
+const vendors = {
+  [VendorName.BestBuy]: defVendor(
+    VendorName.BestBuy,
+    ".sku-title h1",
+    ".fulfillment-add-to-cart-button button",
+  ),
+  [VendorName.NewEgg]: defVendor(
+    VendorName.NewEgg,
+    ".product-title",
+    ".product-buy .btn-message",
+  ),
+  [VendorName.MicroCenter]: defVendor(
+    VendorName.MicroCenter,
+    ".summary h1",
+    ".inventory .inventoryCnt",
+  ),
+}
+
+const { BestBuy, MicroCenter, NewEgg } = vendors
 
 export interface ProductPage {
   vendor: Vendor
   url: string
   expectedText: string
-  cssSelector: string
 }
 
-const defProduct = (vendor, url, expectedText, cssSelector): ProductPage => ({
+const defProduct = (vendor, url, expectedText): ProductPage => ({
   vendor,
   url,
   expectedText,
-  cssSelector,
 })
 
 export const schema: ProductPage[] = [
@@ -27,37 +55,31 @@ export const schema: ProductPage[] = [
     BestBuy,
     "https://www.bestbuy.com/site/pny-geforce-rtx-3070-8gb-xlr8-gaming-epic-x-rgb-triple-fan-graphics-card/6432653.p?skuId=6432653",
     "Sold Out",
-    ".fulfillment-add-to-cart-button button",
   ),
   defProduct(
     BestBuy,
     "https://www.bestbuy.com/site/asus-tuf-rtx3070-8gb-gddr6-pci-express-4-0-graphics-card-black/6439128.p?skuId=6439128",
     "Sold Out",
-    ".fulfillment-add-to-cart-button button",
   ),
   defProduct(
     BestBuy,
     "https://www.bestbuy.com/site/msi-geforce-rtx-3070-ventus-3x-oc-bv-8gb-gddr6-pci-express-4-0-graphics-card-black/6438278.p?skuId=6438278",
     "Sold Out",
-    ".fulfillment-add-to-cart-button button",
   ),
   defProduct(
     NewEgg,
     "https://www.newegg.com/asus-geforce-rtx-3070-dual-rtx3070-o8g/p/N82E16814126459?Description=3070&cm_re=3070-_-14-126-459-_-Product",
     "Sold Out",
-    ".product-buy .btn-message",
   ),
   defProduct(
     NewEgg,
     "https://www.newegg.com/evga-geforce-rtx-3070-08g-p5-3751-kr/p/N82E16814487528?Description=rtx%203070&cm_re=rtx_3070-_-14-487-528-_-Product",
     "Sold Out",
-    ".product-buy .btn-message",
   ),
   defProduct(
     MicroCenter,
     "https://www.microcenter.com/product/630201/msi-geforce-rtx-3070-gaming-x-trio-triple-fan-8gb-gddr6-pcie-40-graphics-card",
     "Sold Out",
-    ".inventory .inventoryCnt",
   ),
 ]
 
@@ -70,9 +92,10 @@ export const options = {
 }
 
 export interface ProductPageStatus {
-  vendor: Vendor
+  name: string
+  // vendor: Vendor
   status: Stocked
-  buttonText: string
+  // buttonText: string
   link: string
 }
 export enum Stocked {
