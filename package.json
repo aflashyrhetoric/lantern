@@ -11,5 +11,9 @@
     "next": "10.0.3",
     "react": "17.0.1",
     "react-dom": "17.0.1"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "got": "^11.8.0"
   }
 }
