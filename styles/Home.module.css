@@ -8,3 +8,8 @@
 
   color: white;
 }
+
+.container td, .container th {
+  /* background: gray;
+  color: white; */
+}
