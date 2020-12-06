@@ -1,34 +1,52 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import cheerio from 'cheerio'
-import got from 'got'
+import cheerio from "cheerio"
+import got from "got"
+import { schema, options, ProductPage, Vendor } from "../../shared"
 
-const getResponseBody = async () => {
-  const resp = await got(
-    'https://www.bestbuy.com/site/msi-geforce-rtx-3070-ventus-3x-oc-bv-8gb-gddr6-pci-express-4-0-graphics-card-black/6438278.p?skuId=6438278',
-    {
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
-      },
-      http2: true,
-    },
-  )
+enum Stocked {
+  SOLD_OUT = "SOLD OUT",
+  IN_STOCK = "IN STOCK NOW",
+}
 
-  // console.log(resp.body)
-  console.log('Response retrieved and resolved successfully.')
+interface ProductPageStatus {
+  vendor: Vendor
+  status: Stocked
+  buttonText: string
+}
 
-  return resp.body
+const getResponseBody = async (
+  page: ProductPage,
+): Promise<ProductPageStatus> => {
+  const resp = await got(page.url, options)
+  console.log("Response retrieved and resolved successfully.")
+  const body = resp.body
+  const $ = cheerio.load(body)
+
+  const buttonText = $(page.cssSelector).text()
+  const soldOut = page.expectedText === buttonText
+
+  console.log(`Button text found: ${buttonText}`)
+
+  return {
+    vendor: page.vendor,
+    status: soldOut ? Stocked.SOLD_OUT : Stocked.IN_STOCK,
+    buttonText: buttonText,
+  }
 }
 
 export default async (req, res) => {
-  console.log(Date.now(), '\n\n\n\n\n\n\n\n\n\n')
+  console.log(Date.now(), "\n\n\n\n\n\n\n\n\n\n")
 
-  const body = await getResponseBody()
-  const $ = cheerio.load(body)
+  const statuses = await Promise.all(
+    schema.map(async (page) => {
+      const resp = await getResponseBody(page)
+      return resp
+    }),
+  )
 
-  const value = $('.fulfillment-add-to-cart-button button').text()
+  console.log(statuses)
 
   res.statusCode = 200
-  res.json({ value: value })
+  res.json({ statuses })
 }
