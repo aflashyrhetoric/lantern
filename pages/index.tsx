@@ -45,7 +45,7 @@ export default function Home() {
     setStatuses(results.statuses)
   }
 
-  useEffect(async () => {
+  useEffect(() => {
     fetchData()
     setLastUpdated(Date.now())
     if (payAttention()) {
