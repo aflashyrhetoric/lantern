@@ -2,18 +2,13 @@
 
 import cheerio from "cheerio"
 import got from "got"
-import { schema, options, ProductPage, Vendor } from "../../shared"
-
-enum Stocked {
-  SOLD_OUT = "SOLD OUT",
-  IN_STOCK = "IN STOCK NOW",
-}
-
-interface ProductPageStatus {
-  vendor: Vendor
-  status: Stocked
-  buttonText: string
-}
+import {
+  schema,
+  options,
+  ProductPage,
+  ProductPageStatus,
+  Stocked,
+} from "../../shared"
 
 const getResponseBody = async (
   page: ProductPage,
@@ -23,8 +18,8 @@ const getResponseBody = async (
   const body = resp.body
   const $ = cheerio.load(body)
 
-  const buttonText = $(page.cssSelector).text()
-  const soldOut = page.expectedText === buttonText
+  let buttonText = $(page.cssSelector).text()
+  const soldOut = page.expectedText === buttonText && buttonText !== ""
 
   console.log(`Button text found: ${buttonText}`)
 
@@ -32,6 +27,7 @@ const getResponseBody = async (
     vendor: page.vendor,
     status: soldOut ? Stocked.SOLD_OUT : Stocked.IN_STOCK,
     buttonText: buttonText,
+    link: page.url,
   }
 }
 
@@ -45,7 +41,7 @@ export default async (req, res) => {
     }),
   )
 
-  console.log(statuses)
+  // console.log(statuses)
 
   res.statusCode = 200
   res.json({ statuses })
