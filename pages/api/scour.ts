@@ -18,14 +18,26 @@ const getResponseBody = async (
   const body = resp.body
   const $ = cheerio.load(body)
 
-  const productName = $(productPage.vendor.nameSelector).text()
-  let buttonText = $(productPage.vendor.buttonSelector).text()
-  const soldOut = productPage.expectedText === buttonText && buttonText !== ""
+  const { vendor } = productPage
+  const {
+    name,
+    nameSelector,
+    buttonSelector,
+    priceSelector,
+    expectedText,
+  } = vendor
 
-  console.log(`Button text found: ${buttonText}`)
+  const productName = $(nameSelector).text()
+  const buttonText = $(buttonSelector).text()
+  const price = $(priceSelector).text()
+  const soldOut = expectedText === buttonText && buttonText !== ""
+
+  // console.log(`Button text found: ${buttonText}`)
 
   return {
+    vendorName: name,
     name: productName,
+    price,
     status: soldOut ? Stocked.SOLD_OUT : Stocked.IN_STOCK,
     // buttonText: buttonText,
     link: productPage.url,
