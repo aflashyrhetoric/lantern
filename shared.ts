@@ -50,6 +50,13 @@ const vendors = {
     "#pricing",
     "Sold Out",
   ),
+  [VendorName.BHPhoto]: defVendor(
+    VendorName.BHPhoto,
+    "[data-selenium=productTitle]",
+    "[data-selenium=notifyAvailabilityButton]",
+    "[data-selenium=pricingPrice]",
+    "Notify When Available",
+  ),
 }
 
 const { BestBuy, MicroCenter, NewEgg } = vendors
@@ -145,5 +152,9 @@ export const schema: ProductPage[] = [
   defProduct(
     MicroCenter,
     "https://www.microcenter.com/product/630035/gigabyte-geforce-rtx-3070-eagle-triple-fan-8gb-gddr6-pcie-40-graphics-card",
+  ),
+  defProduct(
+    MicroCenter,
+    "https://www.microcenter.com/product/611394/gigabyte-geforce-rtx-2070-super-gaming-oc-3x-overclocked-triple-fan-8gb-gddr6-pcie-30-graphics-card",
   ),
 ]

@@ -158,18 +158,24 @@ export default function Home() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {statuses.map((status) => (
+                {statuses.map((status: ProductPageStatus) => (
                   <TableRow key={JSON.stringify(status)}>
                     <TableCell>{status.vendorName}</TableCell>
                     <TableCell>{status.name}</TableCell>
                     <TableCell>{status.status}</TableCell>
                     <TableCell>
                       <Button
-                        color={payAttention() ? "primary" : "default"}
+                        color={
+                          status.status === Stocked.IN_STOCK
+                            ? "primary"
+                            : "default"
+                        }
                         variant="contained"
                         href={status.link}
                       >
-                        {payAttention() ? "Buy" : "Unavailable"}
+                        {status.status === Stocked.IN_STOCK
+                          ? "Buy"
+                          : "Unavailable"}
                       </Button>
                     </TableCell>
                   </TableRow>
