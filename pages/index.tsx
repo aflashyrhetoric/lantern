@@ -28,10 +28,8 @@ export default function Home() {
   // HACKswitch to stop loading
   const stopLoading = false
 
-  const payAttention = (): Boolean =>
-    statuses.some(
-      (status: ProductPageStatus) => status.status !== Stocked.SOLD_OUT,
-    )
+  const checkStockStatuses = (statuses: ProductPageStatus[]): Boolean =>
+    statuses.map((s) => s.status).includes(Stocked.IN_STOCK)
 
   const fetchData = async () => {
     if (stopLoading) {
@@ -44,7 +42,7 @@ export default function Home() {
     setLoading(false)
     setStatuses(results.statuses)
 
-    if (payAttention()) {
+    if (checkStockStatuses(results.statuses)) {
       setAlert(true)
     } else {
       setAlert(false)

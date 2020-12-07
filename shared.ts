@@ -132,10 +132,10 @@ export const schema: ProductPage[] = [
     MicroCenter,
     "https://www.microcenter.com/product/630201/msi-geforce-rtx-3070-gaming-x-trio-triple-fan-8gb-gddr6-pcie-40-graphics-card",
   ),
-  defProduct(
-    MicroCenter,
-    "https://www.microcenter.com/product/630202/msi-geforce-rtx-3070-ventus-3x-overclocked-triple-fan-8gb-gddr6-pcie-40-graphics-card",
-  ),
+  // defProduct(
+  //   MicroCenter,
+  //   "https://www.microcenter.com/product/630202/msi-geforce-rtx-3070-ventus-3x-overclocked-triple-fan-8gb-gddr6-pcie-40-graphics-card",
+  // ),
   defProduct(
     MicroCenter,
     "https://www.microcenter.com/product/630578/evga-geforce-rtx-3070-xc3-ultra-gaming-triple-fan-8gb-gddr6-pcie-40-graphics-card",
