@@ -43,25 +43,21 @@ export default function Home() {
     const results = await response.json()
     setLoading(false)
     setStatuses(results.statuses)
-  }
 
-  useEffect(() => {
-    fetchData()
-    setLastUpdated(Date.now())
     if (payAttention()) {
       setAlert(true)
     } else {
       setAlert(false)
     }
+  }
+
+  useEffect(() => {
+    fetchData()
+    setLastUpdated(Date.now())
 
     setInterval(function () {
       fetchData()
       setLastUpdated(Date.now())
-      if (payAttention()) {
-        setAlert(true)
-      } else {
-        setAlert(false)
-      }
     }, 60 * 1000 * 5)
   }, [])
 
