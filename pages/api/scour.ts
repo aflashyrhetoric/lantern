@@ -27,7 +27,7 @@ const getResponseBody = async (
     expectedText,
   } = vendor
 
-  const productName = $(nameSelector).text()
+  const productName = $(nameSelector).text().trim()
   const buttonText = $(buttonSelector).text()
   const price = $(priceSelector).text()
   const soldOut = expectedText === buttonText && buttonText !== ""
