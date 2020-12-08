@@ -1,3 +1,5 @@
+import useSWR from "swr"
+
 export type Vendor = {
   name: string
   nameSelector: string
@@ -95,10 +97,6 @@ export const schema: ProductPage[] = [
   defProduct(
     BestBuy,
     "https://www.bestbuy.com/site/pny-geforce-rtx-3070-8gb-xlr8-gaming-epic-x-rgb-triple-fan-graphics-card/6432653.p?skuId=6432653",
-  ),
-  defProduct(
-    BestBuy,
-    "https://www.bestbuy.com/site/asus-tuf-rtx3070-8gb-gddr6-pci-express-4-0-graphics-card-black/6439128.p?skuId=6439128",
   ),
   defProduct(
     BestBuy,

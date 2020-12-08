@@ -18,43 +18,30 @@ import NotificationImportantSharpIcon from "@material-ui/icons/NotificationImpor
 import CheckCircleIcon from "@material-ui/icons/CheckCircle"
 
 import { ProductPageStatus, Stocked } from "../shared"
+import useSWR from "swr"
+
+export const fetcher = (url) => fetch(url).then((r) => r.json())
+
+export function useStatuses() {
+  const { data, error } = useSWR("/api/scour", fetcher)
+
+  return {
+    statuses: data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}
 
 export default function Home() {
-  const [statuses, setStatuses] = useState([])
+  const { statuses, isLoading, error } = useStatuses()
+
+  const initialLoad = Date.now()
   const [lastUpdated, setLastUpdated] = useState(Date.now())
-  const [alert, setAlert] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  // HACKswitch to stop loading
-  const stopLoading = false
-
-  const checkStockStatuses = (statuses: ProductPageStatus[]): Boolean =>
-    statuses.map((s) => s.status).includes(Stocked.IN_STOCK)
-
-  const fetchData = async () => {
-    if (stopLoading) {
-      return
-    }
-
-    setLoading(true)
-    const response = await fetch("http://localhost:3000/api/scour")
-    const results = await response.json()
-    setLoading(false)
-    setStatuses(results.statuses)
-
-    if (checkStockStatuses(results.statuses)) {
-      setAlert(true)
-    } else {
-      setAlert(false)
-    }
-  }
 
   useEffect(() => {
-    fetchData()
     setLastUpdated(Date.now())
 
     setInterval(function () {
-      fetchData()
       setLastUpdated(Date.now())
     }, 60 * 1000 * 5)
   }, [])
@@ -72,15 +59,15 @@ export default function Home() {
       header: "Status",
       key: "status",
     },
-    // {
-    //   header: "Button Text",
-    //   key: "buttonText",
-    // },
     {
       header: "Purchase",
       key: "link",
     },
   ]
+
+  const alert = statuses
+    ? statuses.map((s) => s.status).includes(Stocked.IN_STOCK)
+    : false
 
   return (
     <div
@@ -133,15 +120,15 @@ export default function Home() {
       <h2>
         Last updated at:{" "}
         <span style={{ opacity: 0.5 }}>
-          {lastUpdated ? moment(lastUpdated).fromNow() : "IDK"}
+          {lastUpdated ? moment(lastUpdated).from(initialLoad) : "IDK"}
         </span>
       </h2>
       <main>
         <div style={{ marginBottom: "1.5rem" }}></div>
 
-        <ClipLoader size={60} color="fff" loading={loading} />
+        <ClipLoader size={60} color="fff" loading={isLoading} />
 
-        {statuses && statuses.length > 0 && !loading && (
+        {statuses && statuses.length > 0 && !isLoading && (
           <TableContainer component={Paper}>
             <Table>
               <TableHead>

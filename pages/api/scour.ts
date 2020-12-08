@@ -57,5 +57,5 @@ export default async (req, res) => {
   // console.log(statuses)
 
   res.statusCode = 200
-  res.json({ statuses })
+  res.json(statuses)
 }
