@@ -16,18 +16,9 @@ const options = {
 
 const getResponseBody = async (
   productPage: ProductPage,
-  res: NowResponse,
 ): Promise<ProductPageStatus> => {
-  let resp
-
-  try {
-    resp = await got(productPage.url, options)
-  } catch (err) {
-    res.status(502)
-    res.end(err)
-    return
-  }
-
+  const resp = await got(productPage.url, options)
+  console.log(resp)
   const body = resp.body
   const $ = cheerio.load(body)
 
@@ -57,7 +48,7 @@ const getResponseBody = async (
 export default async (req: NowRequest, res: NowResponse) => {
   const statuses = await Promise.all(
     schema.map(async (page) => {
-      const resp = await getResponseBody(page, res)
+      const resp = await getResponseBody(page)
       return resp
     }),
   )
