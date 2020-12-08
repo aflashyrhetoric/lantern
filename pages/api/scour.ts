@@ -12,13 +12,13 @@ const options = {
     "User-Agent":
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36",
   },
+  http2: true,
 }
 
 const getResponseBody = async (
   productPage: ProductPage,
 ): Promise<ProductPageStatus> => {
   const resp = await got(productPage.url, options)
-  console.log(resp)
   const body = resp.body
   const $ = cheerio.load(body)
 
