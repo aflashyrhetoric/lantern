@@ -1,4 +1,4 @@
-import useSWR from "swr"
+import { NowRequest, NowResponse } from "@vercel/node"
 
 export type Vendor = {
   name: string
@@ -72,14 +72,6 @@ const defProduct = (vendor, url): ProductPage => ({
   vendor,
   url,
 })
-
-export const options = {
-  headers: {
-    "User-Agent":
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36",
-  },
-  http2: true,
-}
 
 export interface ProductPageStatus {
   name: string
@@ -156,3 +148,10 @@ export const schema: ProductPage[] = [
     "https://www.microcenter.com/product/611394/gigabyte-geforce-rtx-2070-super-gaming-oc-3x-overclocked-triple-fan-8gb-gddr6-pcie-30-graphics-card",
   ),
 ]
+
+const redirectInvalidRoute = (req, res: NowResponse) => {
+  res.status(403)
+  return res.end("Forbidden route")
+}
+
+export default redirectInvalidRoute

@@ -17,7 +17,7 @@ import ClipLoader from "react-spinners/ClipLoader"
 import NotificationImportantSharpIcon from "@material-ui/icons/NotificationImportantSharp"
 import CheckCircleIcon from "@material-ui/icons/CheckCircle"
 
-import { ProductPageStatus, Stocked } from "../shared"
+import { ProductPageStatus, Stocked } from "./api/shared"
 import useSWR from "swr"
 
 export const fetcher = (url) => fetch(url).then((r) => r.json())
@@ -153,6 +153,8 @@ export default function Home() {
                         }
                         variant="contained"
                         href={status.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         {status.status === Stocked.IN_STOCK
                           ? "Buy"
