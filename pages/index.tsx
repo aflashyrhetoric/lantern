@@ -33,7 +33,7 @@ export function useStatuses() {
 }
 
 export default function Home() {
-  const { statuses, isLoading, error } = useStatuses()
+  const { statuses, isLoading, isError } = useStatuses()
 
   const initialLoad = Date.now()
   const [lastUpdated, setLastUpdated] = useState(Date.now())
