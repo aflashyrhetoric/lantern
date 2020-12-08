@@ -12,13 +12,22 @@ const options = {
     "User-Agent":
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36",
   },
-  http2: true,
 }
 
 const getResponseBody = async (
   productPage: ProductPage,
+  res: NowResponse,
 ): Promise<ProductPageStatus> => {
-  const resp = await got(productPage.url, options)
+  let resp
+
+  try {
+    resp = await got(productPage.url, options)
+  } catch (err) {
+    res.status(502)
+    res.end(err)
+    return
+  }
+
   const body = resp.body
   const $ = cheerio.load(body)
 
@@ -48,7 +57,7 @@ const getResponseBody = async (
 export default async (req: NowRequest, res: NowResponse) => {
   const statuses = await Promise.all(
     schema.map(async (page) => {
-      const resp = await getResponseBody(page)
+      const resp = await getResponseBody(page, res)
       return resp
     }),
   )
