@@ -1,6 +1,6 @@
 .container {
   min-height: 100vh;
-  padding: 0 0.5rem;
+  /* padding: 1 2rem; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -9,7 +9,12 @@
   color: white;
 }
 
-.container td, .container th {
+.main {
+  padding: 1rem 2rem 3rem 1rem;
+}
+
+.container td,
+.container th {
   /* background: gray;
   color: white; */
 }

@@ -116,6 +116,18 @@ export const schema: ProductPage[] = [
   ),
   defProduct(
     NewEgg,
+    "https://www.newegg.com/asus-geforce-rtx-3080-rog-strix-rtx3080-o10g-gaming/p/N82E16814126457?Description=3060&cm_re=3060-_-14-126-457-_-Product&quicklink=true",
+  ),
+  defProduct(
+    NewEgg,
+    "https://www.newegg.com/msi-geforce-rtx-3060-ti-rtx-3060-ti-ventus-2x-oc/p/N82E16814137612?Description=3060&cm_re=3060-_-14-137-612-_-Product&quicklink=true",
+  ),
+  defProduct(
+    NewEgg,
+    "https://www.newegg.com/msi-geforce-rtx-3080-rtx-3080-gaming-x-trio-10g/p/N82E16814137597?Description=3060&cm_re=3060-_-14-137-597-_-Product&quicklink=true",
+  ),
+  defProduct(
+    NewEgg,
     "https://www.newegg.com/evga-geforce-rtx-3070-08g-p5-3751-kr/p/N82E16814487528?Description=rtx%203070&cm_re=rtx_3070-_-14-487-528-_-Product",
   ),
   defProduct(
@@ -139,13 +151,25 @@ export const schema: ProductPage[] = [
     MicroCenter,
     "https://www.microcenter.com/product/630033/gigabyte-geforce-rtx-3070-gaming-overclocked-triple-fan-8gb-gddr6-pcie-40-graphics-card",
   ),
-  defProduct(
-    MicroCenter,
-    "https://www.microcenter.com/product/630035/gigabyte-geforce-rtx-3070-eagle-triple-fan-8gb-gddr6-pcie-40-graphics-card",
-  ),
+  // defProduct(
+  //   MicroCenter,
+  //   "https://www.microcenter.com/product/630035/gigabyte-geforce-rtx-3070-eagle-triple-fan-8gb-gddr6-pcie-40-graphics-card",
+  // ),
   defProduct(
     MicroCenter,
     "https://www.microcenter.com/product/611394/gigabyte-geforce-rtx-2070-super-gaming-oc-3x-overclocked-triple-fan-8gb-gddr6-pcie-30-graphics-card",
+  ),
+  defProduct(
+    MicroCenter,
+    "https://www.microcenter.com/product/631532/msi-geforce-rtx-3060-ti-ventus-2x-overclocked-dual-fan-8gb-gddr6-pcie-40-graphics-card",
+  ),
+  defProduct(
+    MicroCenter,
+    "https://www.microcenter.com/product/631716/nvidia-geforce-rtx-3060-ti-founders-edition-dual-fan-8gb-gddr6-pcie-40-graphics-card",
+  ),
+  defProduct(
+    MicroCenter,
+    "https://www.microcenter.com/product/631926/evga-geforce-rtx-3060-ti-ftw-ultra-gaming-triple-fan-8gb-gddr6-pcie-40-graphics-card",
   ),
 ]
 

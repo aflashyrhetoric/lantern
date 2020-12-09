@@ -22,8 +22,12 @@ import useSWR from "swr"
 
 export const fetcher = (url) => fetch(url).then((r) => r.json())
 
+const REFRESH_INTERVAL_MS = 5 * 60 * 1000
+
 export function useStatuses() {
-  const { data, error } = useSWR("/api/scour", fetcher)
+  const { data, error } = useSWR("/api/scour", fetcher, {
+    refreshInterval: REFRESH_INTERVAL_MS,
+  })
 
   return {
     statuses: data,
@@ -39,11 +43,9 @@ export default function Home() {
   const [lastUpdated, setLastUpdated] = useState(Date.now())
 
   useEffect(() => {
-    setLastUpdated(Date.now())
-
     setInterval(function () {
       setLastUpdated(Date.now())
-    }, 60 * 1000 * 5)
+    }, 3000)
   }, [])
 
   const headers = [
@@ -120,10 +122,12 @@ export default function Home() {
       <h2>
         Last updated at:{" "}
         <span style={{ opacity: 0.5 }}>
-          {lastUpdated ? moment(lastUpdated).from(initialLoad) : "IDK"}
+          {lastUpdated && initialLoad
+            ? moment(lastUpdated).from(initialLoad)
+            : "IDK"}
         </span>
       </h2>
-      <main>
+      <main className={styles.main}>
         <div style={{ marginBottom: "1.5rem" }}></div>
 
         <ClipLoader size={60} color="fff" loading={isLoading} />
