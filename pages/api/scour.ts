@@ -35,13 +35,14 @@ const getResponseBody = async (
     const productName = $(nameSelector).text().trim()
     const buttonText = $(buttonSelector).text()
     const price = $(priceSelector).text()
-    const soldOut = expectedText === buttonText && buttonText !== ""
+    let soldOut = expectedText === buttonText.trim() && buttonText !== ""
 
     return {
       vendorName: name,
       name: productName,
       price,
       status: soldOut ? Stocked.SOLD_OUT : Stocked.IN_STOCK,
+      buttonText,
       link: productPage.url,
     }
   } catch (e) {

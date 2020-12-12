@@ -79,6 +79,7 @@ export interface ProductPageStatus {
   status: Stocked
   link: string
   vendorName: string
+  buttonText?: string
 }
 export enum Stocked {
   SOLD_OUT = "SOLD OUT",
