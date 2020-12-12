@@ -18,34 +18,30 @@ const options = {
 const getResponseBody = async (
   productPage: ProductPage,
 ): Promise<ProductPageStatus> => {
-  try {
-    const resp = await got(productPage.url, options)
-    const body = resp.body
-    const $ = cheerio.load(body)
+  const resp = await got(productPage.url, options)
+  const body = resp.body
+  const $ = cheerio.load(body)
 
-    const { vendor } = productPage
-    const {
-      name,
-      nameSelector,
-      buttonSelector,
-      priceSelector,
-      expectedText,
-    } = vendor
+  const { vendor } = productPage
+  const {
+    name,
+    nameSelector,
+    buttonSelector,
+    priceSelector,
+    expectedText,
+  } = vendor
 
-    const productName = $(nameSelector).text().trim()
-    const buttonText = $(buttonSelector).text()
-    const price = $(priceSelector).text()
-    const soldOut = expectedText === buttonText && buttonText !== ""
+  const productName = $(nameSelector).text().trim()
+  const buttonText = $(buttonSelector).text()
+  const price = $(priceSelector).text()
+  const soldOut = expectedText === buttonText && buttonText !== ""
 
-    return {
-      vendorName: name,
-      name: productName,
-      price,
-      status: soldOut ? Stocked.SOLD_OUT : Stocked.IN_STOCK,
-      link: productPage.url,
-    }
-  } catch (e) {
-    console.error(e)
+  return {
+    vendorName: name,
+    name: productName,
+    price,
+    status: soldOut ? Stocked.SOLD_OUT : Stocked.IN_STOCK,
+    link: productPage.url,
   }
 }
 
