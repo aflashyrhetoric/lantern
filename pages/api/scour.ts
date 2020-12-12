@@ -35,6 +35,17 @@ const getResponseBody = async (
       expectedText,
     } = vendor
 
+    if (!doc) {
+      return {
+        vendorName: name,
+        name: "-",
+        price: 0,
+        status: Stocked.SOLD_OUT,
+        triggerText: "-",
+        link: productPage.url,
+      }
+    }
+
     const productName = doc.querySelector(nameSelector).textContent.trim()
     const triggerText = doc.querySelector(triggerSelector).textContent
     const price = doc.querySelector(priceSelector).textContent
