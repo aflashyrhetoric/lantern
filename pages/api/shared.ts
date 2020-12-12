@@ -3,7 +3,7 @@ import { NowRequest, NowResponse } from "@vercel/node"
 export type Vendor = {
   name: string
   nameSelector: string
-  buttonSelector: string
+  triggerSelector: string
   priceSelector: string
   expectedText: string
 }
@@ -19,13 +19,13 @@ export enum VendorName {
 const defVendor = (
   name,
   nameSelector,
-  buttonSelector,
+  triggerSelector,
   priceSelector,
   expectedText,
 ) => ({
   name,
   nameSelector,
-  buttonSelector,
+  triggerSelector,
   priceSelector,
   expectedText,
 })
@@ -79,7 +79,7 @@ export interface ProductPageStatus {
   status: Stocked
   link: string
   vendorName: string
-  buttonText?: string
+  triggerText?: string
 }
 export enum Stocked {
   SOLD_OUT = "SOLD OUT",

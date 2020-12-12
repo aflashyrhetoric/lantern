@@ -3,9 +3,11 @@
 
 import { NowRequest, NowResponse } from "@vercel/node"
 
-import cheerio from "cheerio"
 import got from "got"
 import { schema, ProductPage, ProductPageStatus, Stocked } from "./shared"
+
+const jsdom = require("jsdom")
+const { JSDOM } = jsdom
 
 const options = {
   headers: {
@@ -21,28 +23,29 @@ const getResponseBody = async (
   try {
     const resp = await got(productPage.url, options)
     const body = resp.body
-    const $ = cheerio.load(body)
+    const dom = new JSDOM(body)
+    const doc = dom.window.document
 
     const { vendor } = productPage
     const {
       name,
       nameSelector,
-      buttonSelector,
+      triggerSelector,
       priceSelector,
       expectedText,
     } = vendor
 
-    const productName = $(nameSelector).text().trim()
-    const buttonText = $(buttonSelector).text()
-    const price = $(priceSelector).text()
-    let soldOut = expectedText === buttonText.trim() && buttonText !== ""
+    const productName = doc.querySelector(nameSelector).textContent.trim()
+    const triggerText = doc.querySelector(triggerSelector).textContent
+    const price = doc.querySelector(priceSelector).textContent
+    let soldOut = expectedText === triggerText.trim() && triggerText !== ""
 
     return {
       vendorName: name,
       name: productName,
       price,
       status: soldOut ? Stocked.SOLD_OUT : Stocked.IN_STOCK,
-      buttonText,
+      triggerText,
       link: productPage.url,
     }
   } catch (e) {
