@@ -26,6 +26,10 @@ const getResponseBody = async (
     const dom = new JSDOM(body)
     const doc = dom.window.document
 
+    if (!doc) {
+      return
+    }
+
     const { vendor } = productPage
     const {
       name,
