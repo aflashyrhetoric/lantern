@@ -75,7 +75,7 @@ const defProduct = (vendor, url): ProductPage => ({
 
 export interface ProductPageStatus {
   name: string
-  price: number
+  price: string
   status: Stocked
   link: string
   vendorName: string

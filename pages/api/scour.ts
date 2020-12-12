@@ -39,16 +39,27 @@ const getResponseBody = async (
       expectedText,
     } = vendor
 
-    const productName =
-      doc.querySelector(nameSelector).textContent.trim() || "-"
-    const triggerText = doc.querySelector(triggerSelector).textContent || "-"
-    const price = doc.querySelector(priceSelector).textContent || "-"
+    const productName = doc.querySelector(nameSelector)
+    let productNameText = ""
+    if (productName) {
+      productNameText = productName.textContent.trim()
+    }
+    const trigger = doc.querySelector(triggerSelector)
+    let triggerText = ""
+    if (trigger) {
+      triggerText = trigger.textContent.trim()
+    }
+    const price = doc.querySelector(priceSelector)
+    let priceText = ""
+    if (price) {
+      priceText = price.textContent.trim()
+    }
     let soldOut = expectedText === triggerText.trim() && triggerText !== ""
 
     return {
       vendorName: name,
       name: productName,
-      price,
+      price: priceText,
       status: soldOut ? Stocked.SOLD_OUT : Stocked.IN_STOCK,
       triggerText,
       link: productPage.url,
