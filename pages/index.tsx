@@ -68,7 +68,10 @@ export default function Home() {
   ]
 
   const alert = statuses
-    ? statuses.map((s) => s.status).includes(Stocked.IN_STOCK)
+    ? statuses
+        .filter((s) => s !== null)
+        .map((s) => s.status)
+        .includes(Stocked.IN_STOCK)
     : false
 
   return (
