@@ -50,7 +50,7 @@ const getResponseBody = async (
       link: productPage.url,
     }
   } catch (e) {
-    console.error(e)
+    console.error(`***************************************ERROR: ${e}`)
     return null
   }
 }
