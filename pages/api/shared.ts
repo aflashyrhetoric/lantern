@@ -133,7 +133,7 @@ export const schema: ProductPage[] = [
   ),
   defProduct(
     MicroCenter,
-    "https://www.microcenter.com/product/630201/msi-geforce-rtx-3070-gaming-x-trio-triple-fan-8gb-gddr6-pcie-40-graphics-card",
+    "https://www.microcenter.com/product/630201/msi-geforce-rtx-3070-gaming-x-trio-triple-fan-8gb-gddr6-pcie-40-graphics-card?storeid=171",
   ),
   // defProduct(
   //   MicroCenter,
@@ -141,16 +141,16 @@ export const schema: ProductPage[] = [
   // ),
   defProduct(
     MicroCenter,
-    "https://www.microcenter.com/product/630578/evga-geforce-rtx-3070-xc3-ultra-gaming-triple-fan-8gb-gddr6-pcie-40-graphics-card",
+    "https://www.microcenter.com/product/630578/evga-geforce-rtx-3070-xc3-ultra-gaming-triple-fan-8gb-gddr6-pcie-40-graphics-card?storeid=171",
   ),
 
   defProduct(
     MicroCenter,
-    "https://www.microcenter.com/product/630684/asus-geforce-rtx-3070-tuf-overclocked-triple-fan-8gb-gddr6-pcie-40-graphics-card",
+    "https://www.microcenter.com/product/630684/asus-geforce-rtx-3070-tuf-overclocked-triple-fan-8gb-gddr6-pcie-40-graphics-card?storeid=171",
   ),
   defProduct(
     MicroCenter,
-    "https://www.microcenter.com/product/630033/gigabyte-geforce-rtx-3070-gaming-overclocked-triple-fan-8gb-gddr6-pcie-40-graphics-card",
+    "https://www.microcenter.com/product/630033/gigabyte-geforce-rtx-3070-gaming-overclocked-triple-fan-8gb-gddr6-pcie-40-graphics-card?storeid=171",
   ),
   // defProduct(
   //   MicroCenter,
