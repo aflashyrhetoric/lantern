@@ -15,6 +15,7 @@ const UA =
 const options = {
   headers: {
     "User-Agent": UA,
+    "accept-language": "en-US,en;q=0.9,ko;q=0.8",
   },
   http2: true,
 }
