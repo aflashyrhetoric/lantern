@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/scour.ts": {
+    "api/scour": {
       "maxDuration": 10
     }
   }
