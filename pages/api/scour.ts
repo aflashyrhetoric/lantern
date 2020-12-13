@@ -60,7 +60,7 @@ const getResponseBody = async (
 
     return {
       vendorName: name,
-      name: productName,
+      name: productNameText,
       price: priceText,
       status: soldOut ? Stocked.SOLD_OUT : Stocked.IN_STOCK,
       triggerText,
