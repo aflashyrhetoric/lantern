@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import Head from "next/head"
-import styles from "../styles/Home.module.css"
+import styles from "../styles/Home.module.scss"
 import moment from "moment"
 
 import Button from "@material-ui/core/Button"
@@ -88,43 +88,24 @@ export default function Home() {
         />
       </Head>
 
-      <h1>
-        {!alert && (
-          <div
-            style={{
-              display: "flex",
-              flexFlow: "row nowrap",
-              alignItems: "center",
-              padding: "3rem",
-            }}
-          >
-            <span color="white">No action required</span> &nbsp;
-            <CheckCircleIcon fontSize="large" style={{ color: "green" }} />
-          </div>
-        )}
-      </h1>
+      {!alert && (
+        <h1 className={styles.banner}>
+          <span color="white">No action required</span> &nbsp;
+          <CheckCircleIcon fontSize="large" style={{ color: "green" }} />
+        </h1>
+      )}
 
-      <h1>
-        {alert && (
-          <div
-            style={{
-              display: "flex",
-              flexFlow: "row nowrap",
-              alignItems: "center",
-            }}
-          >
-            <NotificationImportantSharpIcon style={{ color: "red" }} />
-            <NotificationImportantSharpIcon style={{ color: "red" }} />
-            <span color="white">CHECK STORES IMMEDIATELY</span> &nbsp;
-            <NotificationImportantSharpIcon style={{ color: "red" }} />
-            <NotificationImportantSharpIcon style={{ color: "red" }} />
-          </div>
-        )}
-      </h1>
+      {alert && (
+        <h1 className={styles.banner}>
+          <span color="white">CHECK STORES IMMEDIATELY</span>
+          <NotificationImportantSharpIcon style={{ color: "red" }} />
+        </h1>
+      )}
 
       <h2>
-        Last updated at:{" "}
-        <span style={{ opacity: 0.5 }}>
+        Last updated
+        <br />
+        <span style={{ opacity: 0.5, fontSize: '16px' }}>
           {lastUpdated && initialLoad
             ? moment(lastUpdated).from(initialLoad)
             : "IDK"}

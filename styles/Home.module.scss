@@ -1,0 +1,40 @@
+@import "./_u-mixins.scss";
+
+.container {
+  min-height: 100vh;
+  /* padding: 1 2rem; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+}
+
+.banner {
+  max-width: 90%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  height: 30vh;
+  text-align: center;
+  @include hma;
+
+  @include bp(sm) {
+    text-align: left;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    padding: 3rem;
+    height: initial;
+  }
+}
+
+.main {
+  max-width: 100%;
+  padding: 0.5rem 0.5rem;
+  @include bp(md) {
+    padding: 1rem 2rem 3rem 1rem;
+  }
+}

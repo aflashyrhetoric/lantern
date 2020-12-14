@@ -1,0 +1,155 @@
+// mixin.scss
+// =============================================================
+
+$breakpoints: (
+  "xsmall": 475px,
+  "xs": 475px,
+  "small": 767px,
+  "sm": 767px,
+  "medium": 992px,
+  "md": 992px,
+  "large": 1080px,
+  "lg": 1080px,
+  "xlarge": 1400px,
+  "xl": 1400px,
+) !default;
+
+@mixin bp($breakpoint) {
+  @include breakpoint($breakpoint) {
+    @content;
+  }
+}
+
+@mixin mq($breakpoint) {
+  @include breakpoint($breakpoint) {
+    @content;
+  }
+}
+
+@mixin breakpoint($breakpoint) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $breakpoint) {
+    // Prints a media query based on the value
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
+@mixin flex {
+  display: flex;
+}
+
+@mixin flex-grid-row($size, $gutters: 1) {
+  width: $size;
+}
+
+@mixin flex-grid-column($columns, $gutters: 1) {
+  $_width: $columns/12;
+  $_width: #{$_width * 100%};
+  max-width: $_width;
+  flex-basis: $_width;
+}
+
+// helper classes
+// ==============
+// font-size
+@mixin fz($size) {
+  $size-rem: rem-calc($size);
+  font-size: #{$size}px;
+  font-size: #{$size-rem};
+}
+
+// utilities
+// =========
+@mixin hma() {
+  margin: {
+    left: auto;
+    right: auto;
+  }
+}
+
+@mixin h-p($p) {
+  padding: {
+    left: #{$p}px;
+    right: #{$p}px;
+  }
+}
+
+@mixin v-p($p) {
+  padding: {
+    top: #{$p}px;
+    bottom: #{$p}px;
+  }
+}
+
+@mixin h-m($p) {
+  margin: {
+    left: #{$p}px;
+    right: #{$p}px;
+  }
+}
+
+// For restoring only bottom margin
+@mixin only-margin-bottom($margin) {
+  margin: {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: $margin;
+  }
+}
+
+// For creating arrows easily
+@mixin arrow-up($size, $color) {
+  position: absolute;
+  width: 0;
+  height: 0;
+  z-index: 1200;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid $color;
+}
+
+// clearfix
+@mixin clearfix {
+  &:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}
+
+// Hides on mobile (good for images)
+@mixin hide-on-mobile($flex) {
+  display: none;
+  @include breakpoint(medium) {
+    @if $flex == true {
+      display: flex;
+    } @else {
+      display: block;
+    }
+  }
+}
+
+@mixin gradient($style: watermelon) {
+  @if $style != "professional" {
+    background: linear-gradient(to bottom, #deffd3, #ffcece);
+  } @else {
+    background: linear-gradient(to bottom, #deffd3, #ffcece);
+  }
+}
+
+@mixin light-gradient() {
+  background: linear-gradient(
+    to bottom,
+    lighten(#deffd3, 5),
+    lighten(#ffcece, 5)
+  );
+}
