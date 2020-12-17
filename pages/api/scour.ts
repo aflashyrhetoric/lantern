@@ -57,7 +57,12 @@ const getResponseBody = async (
     if (price) {
       priceText = price.textContent.trim()
     }
-    let soldOut = expectedText === triggerText.trim() && triggerText !== ""
+    let soldOut =
+      triggerText === "" ||
+      triggerText.trim().toLowerCase().includes("sold out") ||
+      triggerText.trim().toLowerCase().includes("coming soon") ||
+      triggerText.trim().toLowerCase().includes("out of stock") ||
+      triggerText.trim().toLowerCase().includes("unavailable")
 
     return {
       vendorName: name,
