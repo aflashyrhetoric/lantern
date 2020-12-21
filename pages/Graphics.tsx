@@ -34,6 +34,9 @@ export const useStatuses = (): ProductPageStatusesResponse => {
     refreshInterval: REFRESH_INTERVAL_MS,
   })
 
+  // const data = []
+  // const error = false
+
   return {
     statuses: data,
     isLoading: !error && !data,
@@ -91,7 +94,7 @@ export default function Home() {
                 }
               />
               <div style={{ marginBottom: "10px" }} />
-              {/* <GraphicsCardTable statuses={statuses} /> */}
+              <GraphicsCardTable statuses={statuses} />
             </>
           )}
         </main>
