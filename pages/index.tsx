@@ -19,7 +19,7 @@ const theme = createMuiTheme({
   },
 })
 
-export const fetcher = (url) => fetch(url).then((r) => r.json())
+export const fetcher = url => fetch(url).then(r => r.json())
 
 const REFRESH_INTERVAL_MS = 5 * 60 * 1000
 
@@ -49,8 +49,8 @@ export default function Home() {
 
   const alert = statuses
     ? statuses
-        .filter((s) => s !== null)
-        .map((s) => s.status)
+        .filter(s => s !== null)
+        .map(s => s.status)
         .includes(Stocked.IN_STOCK)
     : false
 
@@ -61,41 +61,39 @@ export default function Home() {
   }, [])
 
   return (
-    <ThemeProvider theme={theme}>
-      <div
-        className={styles.container}
-        style={{ background: !alert ? "#171717" : "#4f0000" }}
-      >
-        <Head>
-          <title>{alert ? "ALERT" : "OUT OF STOCK"}</title>
-          <link rel="icon" href="/favicon.ico" />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-          />
-        </Head>
+    <div
+      className={styles.container}
+      style={{ background: !alert ? "#171717" : "#4f0000" }}
+    >
+      <Head>
+        <title>{alert ? "ALERT" : "OUT OF STOCK"}</title>
+        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        />
+      </Head>
 
-        <main className={styles.main}>
-          <div style={{ marginBottom: "1.5rem" }}></div>
+      <main className={styles.main}>
+        <div style={{ marginBottom: "1.5rem" }}></div>
 
-          <ClipLoader size={60} color="fff" loading={isLoading} />
+        <ClipLoader size={60} color="fff" loading={isLoading} />
 
-          {statuses && statuses.length > 0 && !isLoading && (
-            <>
-              <GraphicsCardStatus
-                isAlert={alert}
-                lastUpdatedText={
-                  lastUpdated && initialLoad
-                    ? moment(lastUpdated).from(initialLoad)
-                    : "IDK"
-                }
-              />
-              <div style={{ marginBottom: "10px" }} />
-              {/* <GraphicsCardTable statuses={statuses} /> */}
-            </>
-          )}
-        </main>
-      </div>
-    </ThemeProvider>
+        {statuses && statuses.length > 0 && !isLoading && (
+          <>
+            <GraphicsCardStatus
+              isAlert={alert}
+              lastUpdatedText={
+                lastUpdated && initialLoad
+                  ? moment(lastUpdated).from(initialLoad)
+                  : "IDK"
+              }
+            />
+            <div style={{ marginBottom: "10px" }} />
+            {/* <GraphicsCardTable statuses={statuses} /> */}
+          </>
+        )}
+      </main>
+    </div>
   )
 }

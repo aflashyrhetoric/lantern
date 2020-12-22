@@ -1,0 +1,18 @@
+.page {
+  min-height: 100vh;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-flow: column nowrap;
+  background: lighten(black, 10);
+  align-items: center;
+
+  color: white;
+}
+
+.pageInner {
+  // padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
