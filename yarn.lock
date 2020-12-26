@@ -1321,6 +1321,11 @@ compose-function@3.0.3:
   dependencies:
     arity-n "^1.0.4"
 
+compound-interest@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/compound-interest/-/compound-interest-0.3.1.tgz#3b38c57bdb58b52d47350724524039c9b34dbb96"
+  integrity sha1-OzjFe9tYtS1HNQckUkA5ybNNu5Y=
+
 concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"

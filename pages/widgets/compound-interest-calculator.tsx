@@ -7,12 +7,21 @@ import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import Typography from "@material-ui/core/Typography"
 
+const compound = require("compound-interest")
+
 interface CompoundInterestCalculatorProps {}
+
+/*
+  
+  
+  compound(opts); // 8083
+  compound.verbose(opts);
+*/
 
 const calculateInterest = (
   initialPrinciple: string,
   monthlyContributions: string,
-  years: number,
+  years: number = 2033 - 2020, // 13 yrs til i'm 40
 ) => {
   const annualInterest = 0.1
   const compoundingFrequency = 1 /* per year */
@@ -22,10 +31,20 @@ const calculateInterest = (
 
   const annualContributions = parseFloat(monthlyContributions) * 12 * years
 
+  const opts = {
+    initial: initialPrinciple, // initial balance
+    monthly: monthlyContributions, // monthly addition
+    interest: 8, // +% interest
+    compound: 12, // compounding factor (1, 12, 365...)
+    years: years, // years
+  }
+
   const number =
     (parseFloat(initialPrinciple) + annualContributions) *
     parentheticalToTheExponent
-  return new Intl.NumberFormat().format(number)
+
+  // return new Intl.NumberFormat().format(number)
+  return compound(opts)
 }
 
 const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({}: CompoundInterestCalculatorProps) => {
@@ -58,9 +77,7 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
               value={years}
               type="text"
               label="Years Compounded at 8%"
-              onChange={e =>
-                e.target.value === "" ? 0 : setYears(parseFloat(e.target.value))
-              }
+              onChange={e => setYears(e.target.value as number)}
             />
             <div style={{ marginBottom: "10px" }} />
             <TextField
@@ -73,12 +90,6 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
           </Typography>
         </CardContent>
       </Card>
-      {/* <ul>
-        <li>Initial principle: $30,000</li>
-        <li>Annual Interest: 8%</li>
-        <li>Years Compounded: {years}</li>
-        <li>Monthly Contributions: {monthlyContributions}</li>
-      </ul> */}
     </>
   )
 }
