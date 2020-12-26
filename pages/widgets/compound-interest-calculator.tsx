@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import Card from "@material-ui/core/Card"
 import CardActions from "@material-ui/core/CardActions"
@@ -6,6 +6,7 @@ import CardContent from "@material-ui/core/CardContent"
 import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import Typography from "@material-ui/core/Typography"
+import InterestChart from "./compound-interest-chart"
 
 const compound = require("compound-interest")
 
@@ -44,13 +45,21 @@ const calculateInterest = (
     parentheticalToTheExponent
 
   // return new Intl.NumberFormat().format(number)
-  return compound(opts)
+  return compound.verbose(opts)
 }
 
 const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({}: CompoundInterestCalculatorProps) => {
   const [principal, setPrinciple] = useState("1700")
   const [years, setYears] = useState(10)
   const [monthlyContributions, setMonthlyContributions] = useState("0")
+
+  const [savings, setSavings] = useState(
+    calculateInterest(principal, monthlyContributions, years),
+  )
+
+  useEffect(() => {
+    setSavings(calculateInterest(principal, monthlyContributions, years))
+  }, [principal])
 
   return (
     <>
@@ -60,7 +69,7 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
             Compound Interest Calculator
           </Typography>
           <Typography variant="h5" component="h2">
-            ${calculateInterest(principal, monthlyContributions, years)}
+            {savings[savings.length - 1]}
             <div style={{ marginBottom: "10px" }} />
           </Typography>
           <Typography variant="body2" component="p">
@@ -90,6 +99,7 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
           </Typography>
         </CardContent>
       </Card>
+      <InterestChart annualSavings={savings} />
     </>
   )
 }
