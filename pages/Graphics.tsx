@@ -34,9 +34,6 @@ export const useStatuses = (): ProductPageStatusesResponse => {
     refreshInterval: REFRESH_INTERVAL_MS,
   })
 
-  // const data = []
-  // const error = false
-
   return {
     statuses: data,
     isLoading: !error && !data,
