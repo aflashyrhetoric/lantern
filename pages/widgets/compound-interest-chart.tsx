@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Line } from "@nivo/line"
+import { ResponsiveLine } from "@nivo/line"
 
 interface InterestChartProps {
   annualSavings: number[]
@@ -8,30 +8,21 @@ interface InterestChartProps {
 const InterestChart: React.FC<InterestChartProps> = ({
   annualSavings = [],
 }: InterestChartProps) => {
-  const labels = annualSavings.map((v, i) => `${i + 1}`)
-
-  const datasets = [
-    {
-      values: annualSavings,
-    },
-  ]
-
-  const data = { labels, datasets }
-
   return (
-    <div>
-      <Line
+    <div style={{ padding: "1rem", height: "350px", width: "350px" }}>
+      <ResponsiveLine
+        enableGridX={false}
+        enableGridY={false}
+        // axisLeft={}
         data={[
           {
             id: "savings",
             data: annualSavings.map((v, i) => ({
-              x: i,
+              x: `${i + 1}`,
               y: annualSavings[i],
             })),
           },
         ]}
-        width={350}
-        height={350}
       />
     </div>
   )

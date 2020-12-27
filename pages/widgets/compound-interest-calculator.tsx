@@ -59,7 +59,7 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
 
   useEffect(() => {
     setSavings(calculateInterest(principal, monthlyContributions, years))
-  }, [principal])
+  }, [principal, monthlyContributions, years])
 
   return (
     <>
