@@ -16,7 +16,7 @@ const Utilities: React.FC<UtilitiesProps> = ({
   return (
     <div className={styles.page}>
       <h1>Utilities</h1>
-      <div className="pageInner">
+      <div className={styles.pageInner}>
         <CompoundInterestCalculator />
       </div>
     </div>

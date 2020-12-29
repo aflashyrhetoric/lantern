@@ -53,9 +53,13 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
   const [years, setYears] = useState(10)
   const [monthlyContributions, setMonthlyContributions] = useState("0")
 
-  const [savings, setSavings] = useState(
-    calculateInterest(principal, monthlyContributions, years),
-  )
+  const [savings, setSavings] = useState([])
+
+  const formattedFinal =
+    new Intl.NumberFormat("us-EN", {
+      style: "currency",
+      currency: "USD",
+    }).format(savings[savings.length - 1]) || "-"
 
   useEffect(() => {
     setSavings(calculateInterest(principal, monthlyContributions, years))
@@ -63,42 +67,63 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
 
   return (
     <>
-      <Card style={{ width: "300px", height: "300px" }}>
-        <CardContent>
-          <Typography color="textSecondary" gutterBottom>
-            Compound Interest Calculator
-          </Typography>
-          <Typography variant="h5" component="h2">
-            {savings[savings.length - 1]}
+      <div
+        style={{
+          display: "flex",
+          flexFlow: "column nowrap",
+          height: "100%",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="body1" component="p">
+          Final
+        </Typography>
+        <Typography variant="h5" component="h5">
+          {formattedFinal}
+        </Typography>
+        <Card style={{ width: "300px", height: "300px", marginTop: "2rem" }}>
+          <CardContent>
+            <Typography color="textSecondary" gutterBottom>
+              Compound Interest Calculator
+            </Typography>
             <div style={{ marginBottom: "10px" }} />
-          </Typography>
-          <Typography variant="body2" component="p">
-            <TextField
-              variant="outlined"
-              value={principal}
-              type="text"
-              label="$ Amount (USD)"
-              onChange={e => setPrinciple(e.target.value)}
-            />
-            <div style={{ marginBottom: "10px" }} />
-            <TextField
-              variant="outlined"
-              value={years}
-              type="text"
-              label="Years Compounded at 8%"
-              onChange={e => setYears(e.target.value as number)}
-            />
-            <div style={{ marginBottom: "10px" }} />
-            <TextField
-              variant="outlined"
-              value={monthlyContributions}
-              type="text"
-              label="Monthly Contributions"
-              onChange={e => setMonthlyContributions(e.target.value)}
-            />
-          </Typography>
-        </CardContent>
-      </Card>
+            <Typography variant="body2" component="p">
+              <TextField
+                variant="outlined"
+                value={principal}
+                type="text"
+                label="$ Amount (USD)"
+                onChange={e => setPrinciple(e.target.value)}
+              />
+              <span style={{ display: "block", marginBottom: "10px" }} />
+              <TextField
+                variant="outlined"
+                value={years}
+                type="text"
+                label="Years Compounded at 8%"
+                onChange={e => {
+                  const val = e.target.value
+                  const asInt = parseInt(val, 10)
+
+                  if (!asInt) {
+                    setYears(val as number)
+                  } else {
+                    setYears(asInt)
+                  }
+                }}
+              />
+              <div style={{ marginBottom: "10px" }} />
+              <TextField
+                variant="outlined"
+                value={monthlyContributions}
+                type="text"
+                label="Monthly Contributions"
+                onChange={e => setMonthlyContributions(e.target.value)}
+              />
+            </Typography>
+          </CardContent>
+        </Card>
+      </div>
       <InterestChart annualSavings={savings} />
     </>
   )
