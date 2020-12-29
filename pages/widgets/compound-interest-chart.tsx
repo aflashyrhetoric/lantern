@@ -4,25 +4,30 @@ import { Line, ResponsiveLine } from "@nivo/line"
 const styles = require("./compound-interest-chart.module.scss")
 
 interface InterestChartProps {
+  finalAmount: string
   annualSavings: number[]
 }
 
 const InterestChart: React.FC<InterestChartProps> = ({
+  finalAmount,
   annualSavings = [],
 }: InterestChartProps) => {
   const formattedData = annualSavings.map((v, i) => ({
-    x: i + 1,
+    x: i,
     y: annualSavings[i],
   }))
 
   return (
     <div className={styles.wrapper}>
+      <p>{finalAmount}</p>
+
       {annualSavings.length > 0 && (
         <ResponsiveLine
           enableGridX={false}
           enableGridY={false}
           enableArea={false}
           useMesh
+          pointSize={10}
           margin={{
             top: 50,
             bottom: 50,

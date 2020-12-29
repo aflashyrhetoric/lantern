@@ -124,7 +124,7 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
           </CardContent>
         </Card>
       </div>
-      <InterestChart annualSavings={savings} />
+      <InterestChart finalAmount={formattedFinal} annualSavings={savings} />
     </>
   )
 }
