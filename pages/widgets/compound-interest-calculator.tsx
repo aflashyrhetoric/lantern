@@ -22,15 +22,17 @@ interface CompoundInterestCalculatorProps {}
 const calculateInterest = (
   initialPrinciple: string,
   monthlyContributions: string,
-  years: number = 2033 - 2020, // 13 yrs til i'm 40
+  years: string = `${2033 - 2020}`, // 13 yrs til i'm 40
 ) => {
+  const yearsAsNumber = parseInt(years, 10)
   const annualInterest = 0.1
   const compoundingFrequency = 1 /* per year */
   const parenthetical = annualInterest / compoundingFrequency + 1
-  const exponent = compoundingFrequency * years
+  const exponent = compoundingFrequency * yearsAsNumber
   const parentheticalToTheExponent = Math.pow(parenthetical, exponent)
 
-  const annualContributions = parseFloat(monthlyContributions) * 12 * years
+  const annualContributions =
+    parseFloat(monthlyContributions) * 12 * yearsAsNumber
 
   const opts = {
     initial: initialPrinciple, // initial balance
@@ -50,7 +52,7 @@ const calculateInterest = (
 
 const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({}: CompoundInterestCalculatorProps) => {
   const [principal, setPrinciple] = useState("1700")
-  const [years, setYears] = useState(10)
+  const [years, setYears] = useState("10")
   const [monthlyContributions, setMonthlyContributions] = useState("0")
 
   const [savings, setSavings] = useState([])
@@ -101,16 +103,7 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
                 value={years}
                 type="text"
                 label="Years Compounded at 8%"
-                onChange={e => {
-                  const val = e.target.value
-                  const asInt = parseInt(val, 10)
-
-                  if (!asInt) {
-                    setYears(val as number)
-                  } else {
-                    setYears(asInt)
-                  }
-                }}
+                onChange={e => setYears(e.target.value)}
               />
               <div style={{ marginBottom: "10px" }} />
               <TextField
