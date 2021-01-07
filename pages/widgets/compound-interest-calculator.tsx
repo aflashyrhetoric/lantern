@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react"
 
 import Card from "@material-ui/core/Card"
-import CardActions from "@material-ui/core/CardActions"
 import CardContent from "@material-ui/core/CardContent"
-import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import Typography from "@material-ui/core/Typography"
 import InterestChart from "./compound-interest-chart"
@@ -12,39 +10,25 @@ const compound = require("compound-interest")
 
 interface CompoundInterestCalculatorProps {}
 
-/*
-  
-  
-  compound(opts); // 8083
-  compound.verbose(opts);
-*/
-
 const calculateInterest = (
   initialPrinciple: string,
-  monthlyContributions: string,
-  years: number = 2033 - 2020, // 13 yrs til i'm 40
+  monthly: string,
+  years: number = 1993 + 40 - 2021, // 13 yrs til i'm 40
 ) => {
-  const annualInterest = 0.1
-  const compoundingFrequency = 1 /* per year */
-  const parenthetical = annualInterest / compoundingFrequency + 1
-  const exponent = compoundingFrequency * years
-  const parentheticalToTheExponent = Math.pow(parenthetical, exponent)
-
-  const annualContributions = parseFloat(monthlyContributions) * 12 * years
+  const COMPOUNDING_FREQUENCY = {
+    ANNUAL: 1,
+    MONTHLY: 12,
+    DAILY: 365,
+  }
 
   const opts = {
     initial: initialPrinciple, // initial balance
-    monthly: monthlyContributions, // monthly addition
+    monthly, // monthly addition
     interest: 8, // +% interest
-    compound: 12, // compounding factor (1, 12, 365...)
-    years: years, // years
+    compound: COMPOUNDING_FREQUENCY.ANNUAL, // per what? (per year)
+    years, // years
   }
 
-  const number =
-    (parseFloat(initialPrinciple) + annualContributions) *
-    parentheticalToTheExponent
-
-  // return new Intl.NumberFormat().format(number)
   return compound.verbose(opts)
 }
 
