@@ -41,40 +41,41 @@ const GraphicsCardTable: React.FC<GraphicsCardTableProps> = ({
       <Table>
         <TableHead>
           <TableRow>
-            {headers.map((header) => (
+            {headers.map(header => (
               <TableCell key={header.key}>{header.header}</TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {statuses
-            .filter((s) => s !== null)
-            .map((status: ProductPageStatus) => {
-              return (
-                <TableRow key={JSON.stringify(status)}>
-                  <TableCell>{status.vendorName}</TableCell>
-                  <TableCell>{status.name}</TableCell>
-                  <TableCell>{status.status}</TableCell>
-                  <TableCell>
-                    <Button
-                      color={
-                        status.status === Stocked.IN_STOCK
-                          ? "primary"
-                          : "default"
-                      }
-                      variant="contained"
-                      href={status.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {status.status === Stocked.IN_STOCK
-                        ? "Buy"
-                        : "Unavailable"}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              )
-            })}
+          {statuses &&
+            statuses
+              .filter(s => s !== null)
+              .map((status: ProductPageStatus) => {
+                return (
+                  <TableRow key={JSON.stringify(status)}>
+                    <TableCell>{status.vendorName}</TableCell>
+                    <TableCell>{status.name}</TableCell>
+                    <TableCell>{status.status}</TableCell>
+                    <TableCell>
+                      <Button
+                        color={
+                          status.status === Stocked.IN_STOCK
+                            ? "primary"
+                            : "default"
+                        }
+                        variant="contained"
+                        href={status.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {status.status === Stocked.IN_STOCK
+                          ? "Buy"
+                          : "Unavailable"}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
         </TableBody>
       </Table>
     </TableContainer>

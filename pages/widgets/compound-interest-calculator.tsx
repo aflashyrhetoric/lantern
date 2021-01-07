@@ -34,7 +34,7 @@ const calculateInterest = (
 
 const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({}: CompoundInterestCalculatorProps) => {
   const [principal, setPrinciple] = useState("1700")
-  const [years, setYears] = useState(10)
+  const [years, setYears] = useState("10")
   const [monthlyContributions, setMonthlyContributions] = useState("0")
 
   const [savings, setSavings] = useState([])
@@ -85,16 +85,7 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
                 value={years}
                 type="text"
                 label="Years Compounded at 8%"
-                onChange={e => {
-                  const val = e.target.value
-                  const asInt = parseInt(val, 10)
-
-                  if (!asInt) {
-                    setYears(val as number)
-                  } else {
-                    setYears(asInt)
-                  }
-                }}
+                onChange={e => setYears(e.target.value)}
               />
               <div style={{ marginBottom: "10px" }} />
               <TextField
