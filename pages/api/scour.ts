@@ -61,6 +61,7 @@ const getResponseBody = async (
       triggerText === "" ||
       triggerText.trim().toLowerCase().includes("sold out") ||
       triggerText.trim().toLowerCase().includes("coming soon") ||
+      triggerText.trim().toLowerCase().includes("not carried") ||
       triggerText.trim().toLowerCase().includes("out of stock") ||
       triggerText.trim().toLowerCase().includes("unavailable")
 
