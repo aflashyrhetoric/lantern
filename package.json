@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "devDiffPort": "next dev -p 3001",
-    "devServer": "next dev -p 80",
+    "serve": "next dev -p 80",
     "build": "next build",
     "start": "next start"
   },
