@@ -11,9 +11,10 @@ const compound = require("compound-interest")
 interface CompoundInterestCalculatorProps {}
 
 const calculateInterest = (
-  initialPrinciple: string,
+  initialPrinciple: number,
   monthly: string,
-  years: number = 1993 + 40 - 2021, // 13 yrs til i'm 40
+  interest: number,
+  years: string = `${1993 + 40 - 2021}`, // 13 yrs til i'm 40
 ) => {
   const COMPOUNDING_FREQUENCY = {
     ANNUAL: 1,
@@ -24,17 +25,18 @@ const calculateInterest = (
   const opts = {
     initial: initialPrinciple, // initial balance
     monthly, // monthly addition
-    interest: 8, // +% interest
+    interest, // +% interest
     compound: COMPOUNDING_FREQUENCY.ANNUAL, // per what? (per year)
-    years, // years
+    years: parseInt(years), // years
   }
 
   return compound.verbose(opts)
 }
 
 const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({}: CompoundInterestCalculatorProps) => {
-  const [principal, setPrinciple] = useState("1700")
-  const [years, setYears] = useState("10")
+  const rate = 12
+  const [principal, setPrinciple] = useState(1700)
+  const [years, setYears] = useState(rate)
   const [monthlyContributions, setMonthlyContributions] = useState("0")
 
   const [savings, setSavings] = useState([])
@@ -46,7 +48,7 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
     }).format(savings[savings.length - 1]) || "-"
 
   useEffect(() => {
-    setSavings(calculateInterest(principal, monthlyContributions, years))
+    setSavings(calculateInterest(principal, monthlyContributions, rate, years))
   }, [principal, monthlyContributions, years])
 
   return (
@@ -84,8 +86,19 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
                 variant="outlined"
                 value={years}
                 type="text"
-                label="Years Compounded at 8%"
-                onChange={e => setYears(e.target.value)}
+                label={`Years Compounded at ${rate}%`}
+                onChange={e => {
+                  if (e.target.value === "") {
+                    setYears(0)
+                    return
+                  }
+                  let asNum = parseInt(e.target.value)
+                  if (asNum === NaN) {
+                    asNum = 10
+                  }
+
+                  setYears(asNum)
+                }}
               />
               <div style={{ marginBottom: "10px" }} />
               <TextField

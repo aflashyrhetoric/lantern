@@ -94,7 +94,25 @@ export enum Stocked {
   IN_STOCK = "IN STOCK NOW",
 }
 
+const dp = (v, link) => defProduct(v, link)
+
 export const schema: ProductPage[] = [
+  dp(
+    MicroCenter,
+    "https://www.microcenter.com/product/617530/powercolor-radeon-rx-5700-xt-liquid-devil-overclocked-liquid-cooled-8gb-gddr6-pcie-40-graphics-card",
+  ),
+  dp(
+    MicroCenter,
+    "https://www.microcenter.com/product/624719/asus-radeon-rx-5600-xt-evo-top-edition-dual-fan-6gb-gddr6-pcie-40-graphics-card",
+  ),
+  dp(
+    MicroCenter,
+    "https://www.microcenter.com/product/626833/asus-amd-radeon-rx-5600-xt-tuf-gaming-x3-triple-fan-6gb-gddr6-pcie-40-graphics-card",
+  ),
+  defProduct(
+    MicroCenter,
+    "https://www.microcenter.com/product/626832/asus-radeon-rx-5600-xt-rog-strix-top-edition-overclocked-triple-fan-6gb-gddr6-pcie-40-graphics-card",
+  ),
   defProduct(
     BestBuy,
     "https://www.bestbuy.com/site/pny-geforce-rtx-3070-8gb-xlr8-gaming-epic-x-rgb-triple-fan-graphics-card/6432653.p?skuId=6432653",
