@@ -14,7 +14,7 @@ const calculateInterest = (
   initialPrinciple: number,
   monthly: string,
   interest: number,
-  years: string = `${1993 + 40 - 2021}`, // 13 yrs til i'm 40
+  years: number = 1993 + 40 - 2021, // 13 yrs til i'm 40
 ) => {
   const COMPOUNDING_FREQUENCY = {
     ANNUAL: 1,
@@ -27,7 +27,7 @@ const calculateInterest = (
     monthly, // monthly addition
     interest, // +% interest
     compound: COMPOUNDING_FREQUENCY.ANNUAL, // per what? (per year)
-    years: parseInt(years), // years
+    years, // years
   }
 
   return compound.verbose(opts)
@@ -79,7 +79,9 @@ const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> = ({
                 value={principal}
                 type="text"
                 label="$ Amount (USD)"
-                onChange={e => setPrinciple(e.target.value)}
+                onChange={e =>
+                  setPrinciple(e.target.value as unknown as React.SetStateAction<number>)
+                }
               />
               <span style={{ display: "block", marginBottom: "10px" }} />
               <TextField
