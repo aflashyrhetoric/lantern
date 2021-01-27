@@ -202,6 +202,10 @@ export const schema: ProductPage[] = [
   //     MicroCenter,
   //     "https://www.microcenter.com/product/631926/evga-geforce-rtx-3060-ti-ftw-ultra-gaming-triple-fan-8gb-gddr6-pcie-40-graphics-card",
   //   ),
+  dp(
+    MicroCenter,
+    "https://www.microcenter.com/product/631510/apple-mac-mini-mgnr3ll-a-(late-2020)-desktop-computer",
+  ),
   defProduct(
     BestBuy,
     "https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149",

@@ -12,6 +12,7 @@ import GraphicsCardTable from "./GraphicsCardTable"
 
 import { createMuiTheme } from "@material-ui/core/styles"
 import { ThemeProvider } from "@material-ui/styles"
+import LHeader from "../global/Header"
 
 const theme = createMuiTheme({
   palette: {
@@ -19,7 +20,7 @@ const theme = createMuiTheme({
   },
 })
 
-export const fetcher = (url) => fetch(url).then((r) => r.json())
+export const fetcher = url => fetch(url).then(r => r.json())
 
 const REFRESH_INTERVAL_MS = 5 * 60 * 1000
 
@@ -49,8 +50,8 @@ export default function Home() {
 
   const alert = statuses
     ? statuses
-        .filter((s) => s !== null)
-        .map((s) => s.status)
+        .filter(s => s !== null)
+        .map(s => s.status)
         .includes(Stocked.IN_STOCK)
     : false
 
@@ -73,12 +74,22 @@ export default function Home() {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
+          <link
+            rel="stylesheet"
+            href="//unpkg.com/carbon-components/css/carbon-components.css"
+          />
         </Head>
 
         <main className={styles.main}>
+          <LHeader />
           <div style={{ marginBottom: "1.5rem" }}></div>
 
-          <ClipLoader size={60} color="fff" loading={isLoading} />
+          {isLoading && (
+            <div style={{ display: "flex", flexFlow: "column nowrap" }}>
+              <span style={{ marginBottom: "10px" }}>loading</span>
+              <ClipLoader size={60} color="fff" loading />
+            </div>
+          )}
 
           {statuses && statuses.length > 0 && !isLoading && (
             <>

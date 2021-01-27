@@ -49,7 +49,7 @@ export default function Meh() {
           <Card
             style={{
               width: "500px",
-              height: "300px",
+              height: "200px",
               marginTop: "2rem",
             }}
           >
@@ -65,14 +65,13 @@ export default function Meh() {
               {/* {mehdata.image} */}
               <Typography
                 color="textPrimary"
-                variant="h4"
-                component="h4"
+                variant="h5"
+                component="h5"
                 gutterBottom
               >
                 {mehdata.name}
               </Typography>
-              <div style={{ marginBottom: "10px" }} />
-              <Typography variant="h4" component="h4">
+              <Typography variant="h5" component="h5">
                 {mehdata.price}
               </Typography>
               <div className={styles.buttonWrapper}>

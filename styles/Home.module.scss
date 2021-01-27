@@ -2,12 +2,9 @@
 
 .container {
   min-height: 100vh;
-  /* padding: 1 2rem; */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
+  // display: flex;
+  // flex-direction: column;
+  background: #171717;
   color: white;
 }
 
@@ -37,4 +34,5 @@
   @include bp(md) {
     padding: 1rem 2rem 3rem 1rem;
   }
+  padding-top: 47px;
 }

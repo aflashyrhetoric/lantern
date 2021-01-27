@@ -21,7 +21,7 @@ const GraphicsCardStatus: React.FC<GraphicsCardStatusProps> = ({
     <Card style={{ width: "50%" }}>
       <CardContent>
         <Typography color="textSecondary" gutterBottom>
-          Graphics Card Availability
+          Product Availability
         </Typography>
 
         {!isAlert && (
