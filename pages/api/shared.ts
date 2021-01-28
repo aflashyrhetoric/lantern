@@ -157,10 +157,10 @@ export const schema: ProductPage[] = [
   //     NewEgg,
   //     "https://www.newegg.com/evga-geforce-rtx-3070-08g-p5-3751-kr/p/N82E16814487528?Description=rtx%203070&cm_re=rtx_3070-_-14-487-528-_-Product",
   //   ),
-  //   defProduct(
-  //     Aerie,
-  //     "https://www.ae.com/us/en/p/aerie/leggings/7-8-leggings/offline-real-me-high-waisted-crossover-legging/0708_4743_073",
-  //   ),
+  defProduct(
+    Aerie,
+    "https://www.ae.com/us/en/p/aerie/leggings/7-8-leggings/offline-real-me-high-waisted-crossover-legging/0708_4743_073",
+  ),
   //   defProduct(
   //     MicroCenter,
   //     "https://www.microcenter.com/product/630201/msi-geforce-rtx-3070-gaming-x-trio-triple-fan-8gb-gddr6-pcie-40-graphics-card?storeid=171",
