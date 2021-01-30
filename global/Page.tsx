@@ -3,6 +3,8 @@ import Head from "next/head"
 import styles from "../styles/Home.module.scss"
 import LHeader from "../global/Header"
 
+// import "../styles/app.module.scss"
+
 export interface Page {
   children: any
 }
@@ -15,12 +17,12 @@ const Home = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,700&display=swap"
         />
-        <link
+        {/* <link
           rel="stylesheet"
-          href="//unpkg.com/carbon-components/css/carbon-components.css"
-        />
+          href="https://unpkg.com/carbon-components@10.27.0/css/carbon-components.min.css"
+        /> */}
       </Head>
       <main className={styles.main}>
         <LHeader />

@@ -20,14 +20,13 @@ export const LTableHeader: React.FC<Props> = ({ title }) => {
           alignItems: "center",
           position: "absolute",
           zIndex: 1,
-          top: "8px",
-          left: "8px",
+          top: "14px",
+          left: "14px",
         }}
       >
         <h3
           style={{
-            fontWeight: "bold",
-            fontSize: "20px",
+            fontSize: "18px",
             marginRight: "5px",
           }}
         >

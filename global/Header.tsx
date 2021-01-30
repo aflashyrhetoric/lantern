@@ -29,10 +29,11 @@ const LHeader: React.FC = () => {
               AI
             </HeaderName>
             <HeaderNavigation aria-label="Lantern">
-              <HeaderMenuItem href="/utilities">
-                utilities
-              </HeaderMenuItem>
               <HeaderMenuItem href="/scan-products">echo</HeaderMenuItem>
+              <HeaderMenuItem href="/appledore">appledore</HeaderMenuItem>
+              <HeaderMenuItem href="/utilities">
+               misc 
+              </HeaderMenuItem>
               {/* <HeaderMenuItem href="#">Link 3</HeaderMenuItem>
               <HeaderMenu aria-label="Link 4" menuLinkName="Link 4">
                 <HeaderMenuItem href="#">Sub-link 1</HeaderMenuItem>
@@ -47,8 +48,9 @@ const LHeader: React.FC = () => {
             >
               <SideNavItems>
                 <HeaderSideNavItems>
-                  <HeaderMenuItem href="/utilities">utilities</HeaderMenuItem>
                   <HeaderMenuItem href="/scan-products">echo</HeaderMenuItem>
+                  <HeaderMenuItem href="/appledore">appledore</HeaderMenuItem>
+                  <HeaderMenuItem href="/utilities">misc</HeaderMenuItem>
                   {/* <HeaderMenuItem href="#">Link 3</HeaderMenuItem>
                   <HeaderMenu aria-label="Link 4" menuLinkName="Link 4">
                     <HeaderMenuItem href="#">Sub-link 1</HeaderMenuItem>
