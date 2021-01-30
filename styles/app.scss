@@ -13,10 +13,10 @@ $carbon--theme: $carbon--theme--g100;
 @import "carbon-components/scss/components/button/_button.scss";
 // @import "carbon-components/scss/components/copy-button/_copy-button.scss";
 // @import "carbon-components/scss/components/file-uploader/_file-uploader.scss";
-@import "carbon-components/scss/components/checkbox/_checkbox.scss";
-@import "carbon-components/scss/components/combo-box/_combo-box.scss";
+// @import "carbon-components/scss/components/checkbox/_checkbox.scss";
+// @import "carbon-components/scss/components/combo-box/_combo-box.scss";
 @import "carbon-components/scss/components/radio-button/_radio-button.scss";
-@import "carbon-components/scss/components/toggle/_toggle.scss";
+// @import "carbon-components/scss/components/toggle/_toggle.scss";
 @import "carbon-components/scss/components/search/_search.scss";
 @import "carbon-components/scss/components/select/_select.scss";
 @import "carbon-components/scss/components/text-input/_text-input.scss";
@@ -36,7 +36,7 @@ $carbon--theme: $carbon--theme--g100;
 @import "carbon-components/scss/components/loading/_loading.scss";
 @import "carbon-components/scss/components/modal/_modal.scss";
 @import "carbon-components/scss/components/multi-select/_multi-select.scss";
-@import "carbon-components/scss/components/notification/_inline-notification.scss";
+// @import "carbon-components/scss/components/notification/_inline-notification.scss";
 // @import "carbon-components/scss/components/notification/_toast-notification.scss";
 @import "carbon-components/scss/components/tooltip/_tooltip.scss";
 @import "carbon-components/scss/components/tabs/_tabs.scss";
@@ -53,3 +53,11 @@ $carbon--theme: $carbon--theme--g100;
 @import "carbon-components/scss/components/inline-loading/_inline-loading.scss";
 // @import "carbon-components/scss/components/pagination-nav/_pagination-nav.scss";
 @import "carbon-components/scss/components/ui-shell/_ui-shell.scss";
+
+@mixin remove-modal-right-padding {
+  .bx--modal-container .bx--modal-content {
+    padding-right: 5%;
+  }
+}
+
+@include remove-modal-right-padding;
