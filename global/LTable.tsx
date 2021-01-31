@@ -26,6 +26,7 @@ import {
 } from "carbon-components-react"
 import { Edit32, TrashCan32 } from "@carbon/icons-react"
 import LTableHeader from "./LTableHeader"
+import EmptyRow from "./EmptyRow"
 import { prepareTableCell } from "./utils"
 
 interface Props {
@@ -305,7 +306,9 @@ export const LTable: React.FC<Props> = ({
                     </TableHead>
                   )}
                   <TableBody>
-                    {rows.length === 0 && <TableRow>Empty</TableRow>}
+                    {rows.length === 0 && (
+                      <EmptyRow width={headerData.length + 1} text="No records." subtext="Click 'Add New' to create new records."/>
+                    )}
                     {rows.map((row: TableRowShape, index) => (
                       <TableRow key={row.id} {...getRowProps({ row })}>
                         {!disableAllControls && !disableBatch && (
