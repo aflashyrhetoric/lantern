@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import moment from "moment"
 
-import Page from "../global/Page"
-import LTable from "../global/LTable"
+import Page from "../../global/Page"
+import LTable from "../../global/LTable"
 import {
   Modal,
   Loading,
@@ -13,10 +13,10 @@ import {
   DatePickerInput,
   TextArea,
 } from "carbon-components-react"
-import { EditingState, Person } from "../types"
-import getHandlers from "../helpers/form/eventHandlers"
-import Validations from "../helpers/form/validation"
-import { endpoint } from "../helpers/api"
+import { EditingState, Person } from "../../types"
+import getHandlers from "../../helpers/form/eventHandlers"
+import Validations from "../../helpers/form/validation"
+import { endpoint } from "../../helpers/api"
 
 const Appledore: React.FC = () => {
   const [people, setPeople] = useState([])
@@ -67,8 +67,7 @@ const Appledore: React.FC = () => {
   }
 
   const deletePerson = (person_id: number) => {
-    deletePersonRequest(person_id)
-      .then(() => resetForm())
+    deletePersonRequest(person_id).then(() => resetForm())
   }
 
   const deletePersonRequest = person_id => {
