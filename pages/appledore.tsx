@@ -53,6 +53,19 @@ const Appledore: React.FC = () => {
     }).then(() => resetForm())
   }
 
+  const updatePerson = (id: number) => {
+    fetch(endpoint(`/people/${id}`), {
+      method: "PUT",
+      body: JSON.stringify({
+        ...formState,
+        dob:
+          formState.dob === null
+            ? null
+            : moment.utc(formState.dob).format("YYYY-MM-DD"),
+      }) as any,
+    }).then(() => resetForm())
+  }
+
   const deletePerson = (person_id: number) => {
     deletePersonRequest(person_id)
       .then(response => response.json())
@@ -109,9 +122,9 @@ const Appledore: React.FC = () => {
               if (editingMode === EditingState.CREATE) {
                 createPerson()
               }
-              // if (editingMode === EditingState.UPDATE) {
-              //   updatePerson()
-              // }
+              if (editingMode === EditingState.UPDATE) {
+                updatePerson(formState.id)
+              }
             }}
             onRequestClose={() => {
               resetForm()
@@ -204,7 +217,11 @@ const Appledore: React.FC = () => {
                   datePickerType="single"
                   dateFormat="Y-m-d"
                   style={{ marginBottom: "10px" }}
-                  value={formState && formState.dob}
+                  value={
+                    formState &&
+                    formState.dob &&
+                    moment.utc(formState.dob).format("YYYY-MM-DD")
+                  }
                   onChange={event => {
                     setFormState({
                       ...formState,
@@ -221,29 +238,6 @@ const Appledore: React.FC = () => {
                     type="text"
                   />
                 </DatePicker>
-              </FormGroup>
-              <FormGroup legendText="">
-                <TextArea
-                  id="notes"
-                  name="notes"
-                  value={(formState && formState.notes) || ""}
-                  placeholder="In the bleak midwinter..."
-                  invalid={invalidFields.includes("notes")}
-                  invalidText="A valid value is required"
-                  labelText="Notes"
-                  onChange={e => handleTextInputChange(e, "notes")}
-                />
-                <div style={{ marginBottom: "10px" }} />
-                <TextArea
-                  id="pressure_points"
-                  name="pressure_points"
-                  value={(formState && formState.pressure_points) || ""}
-                  placeholder=""
-                  invalid={invalidFields.includes("pressure_points")}
-                  invalidText="A valid value is required"
-                  labelText="Pressure points"
-                  onChange={e => handleTextInputChange(e, "pressure_points")}
-                />
               </FormGroup>
             </Form>
           </Modal>
@@ -268,7 +262,12 @@ const Appledore: React.FC = () => {
               })
             }}
             rawRowData={people}
-            rowData={people.map(p => ({ ...p, id: `${p.id}` }))}
+            rowData={people.map(p => ({
+              ...p,
+              id: `${p.id}`,
+              dob:
+                p.dob !== null ? moment.utc(p.dob).format("YYYY-MM-DD") : "-",
+            }))}
             headerData={[
               {
                 header: "ID",

@@ -26,7 +26,7 @@ const LHeader: React.FC = () => {
               isActive={isSideNavExpanded}
             />
             <HeaderName href="/" prefix="LNTRN">
-              AI
+              GO
             </HeaderName>
             <HeaderNavigation aria-label="Lantern">
               <HeaderMenuItem href="/scan-products">echo</HeaderMenuItem>
