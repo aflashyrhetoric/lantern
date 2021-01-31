@@ -307,14 +307,7 @@ export const LTable: React.FC<Props> = ({
                   <TableBody>
                     {rows.length === 0 && <TableRow>Empty</TableRow>}
                     {rows.map((row: TableRowShape, index) => (
-                      <TableRow
-                        style={{
-                          opacity:
-                            rowData[index].isComplete === true ? 0.25 : 1,
-                        }}
-                        key={row.id}
-                        {...getRowProps({ row })}
-                      >
+                      <TableRow key={row.id} {...getRowProps({ row })}>
                         {!disableAllControls && !disableBatch && (
                           <TableSelectRow {...getSelectionProps({ row })} />
                         )}

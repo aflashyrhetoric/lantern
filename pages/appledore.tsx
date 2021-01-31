@@ -68,15 +68,15 @@ const Appledore: React.FC = () => {
 
   const deletePerson = (person_id: number) => {
     deletePersonRequest(person_id)
-      .then(response => response.json())
-      .then(data => resetForm())
+      .then(() => resetForm())
   }
 
   const deletePersonRequest = person_id => {
-    return fetch(endpoint(`/people/${person_id}`))
+    return fetch(endpoint(`/people/${person_id}`), { method: "DELETE" })
   }
 
   const resetForm = () => {
+    setDeleteModalOpen(false)
     setPersonModalOpen(false)
     setLoading(true)
     setFormState(null)
@@ -97,9 +97,9 @@ const Appledore: React.FC = () => {
           <Modal
             danger
             open={deleteModalOpen}
-            modalHeading="Confirm deletion, master sensei"
-            primaryButtonText="yeet"
-            secondaryButtonText="nvm"
+            modalHeading="Confirm deletion of person and all associated data?"
+            primaryButtonText="Delete"
+            secondaryButtonText="No"
             onBlur={() => setDeleteModalOpen(false)}
             onRequestClose={() => setDeleteModalOpen(false)}
             onRequestSubmit={() => deletePerson(formState.id)}
