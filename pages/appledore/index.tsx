@@ -106,7 +106,6 @@ const Appledore: React.FC = (props: any) => {
   return (
     <Page>
       <>
-        {process.env.LANTERN_ENV}
         <Modal
           danger
           open={deleteModalOpen}
@@ -274,7 +273,7 @@ const Appledore: React.FC = (props: any) => {
               window.location.reload()
             })
           }}
-          rawRowData={people}
+          rawRowData={people.map(p => ({ ...p, id: `${p.id}` }))}
           rowData={people
             .map(p => ({
               ...p,
