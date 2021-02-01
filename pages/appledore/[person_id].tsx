@@ -16,10 +16,20 @@ import { TrashCan20 } from "@carbon/icons-react"
 import Page from "../../global/Page"
 import { endpoint } from "../../helpers/api"
 import { Person } from "../../types"
+import { getBaseURL } from "../../constants"
 
 const styles = require("./styles.module.scss")
 
-const Dossier = () => {
+export async function getStaticProps() {
+  return {
+    props: {
+      baseurl: getBaseURL(process.env.LANTERN_ENV),
+    },
+  }
+}
+
+const Dossier = props => {
+  const { baseurl } = props
   const router = useRouter()
   const { person_id } = router.query
 
@@ -30,7 +40,7 @@ const Dossier = () => {
   const [loading, setLoading] = useState(false)
 
   const loadData = () =>
-    fetch(endpoint(`/people/${person_id}`))
+    fetch(endpoint(baseurl, `/people/${person_id}`))
       .then(response => response.json())
       .then(data => {
         setPerson(data.data)
@@ -46,7 +56,7 @@ const Dossier = () => {
   const addNote = () => {
     setLoading(true)
 
-    fetch(endpoint(`/notes/${person_id}`), {
+    fetch(endpoint(baseurl, `/notes/${person_id}`), {
       method: "POST",
       body: JSON.stringify({ text: noteForm, person_id } as any),
     }).then(data => {
@@ -59,7 +69,7 @@ const Dossier = () => {
   const deleteNote = (id: number) => {
     setLoading(true)
 
-    fetch(endpoint(`/notes/${id}`), {
+    fetch(endpoint(baseurl, `/notes/${id}`), {
       method: "DELETE",
     }).then(data => {
       loadData()
@@ -70,7 +80,7 @@ const Dossier = () => {
   const addPressurePoint = () => {
     setLoading(true)
 
-    fetch(endpoint(`/pressure-points/${person_id}`), {
+    fetch(endpoint(baseurl, `/pressure-points/${person_id}`), {
       method: "POST",
       body: JSON.stringify({
         description: pressurePointForm,
@@ -86,7 +96,7 @@ const Dossier = () => {
   const deletePressurePoint = (id: number) => {
     setLoading(true)
 
-    fetch(endpoint(`/pressure-points/${id}`), {
+    fetch(endpoint(baseurl, `/pressure-points/${id}`), {
       method: "DELETE",
     }).then(data => {
       loadData()

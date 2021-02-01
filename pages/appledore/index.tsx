@@ -17,11 +17,20 @@ import { EditingState, Person } from "../../types"
 import getHandlers from "../../helpers/form/eventHandlers"
 import Validations from "../../helpers/form/validation"
 import { endpoint } from "../../helpers/api"
-import { baseurl } from "../../constants"
+import { getBaseURL } from "../../constants"
 
 const styles = require("./styles.module.scss")
 
-const Appledore: React.FC = () => {
+export async function getStaticProps() {
+  return {
+    props: {
+      baseurl: getBaseURL(process.env.LANTERN_ENV),
+    },
+  }
+}
+
+const Appledore: React.FC = (props: any) => {
+  const { baseurl } = props
   const [people, setPeople] = useState([])
 
   // UI hooks
@@ -36,10 +45,8 @@ const Appledore: React.FC = () => {
     EditingState.CREATE,
   )
 
-  console.log(process.env)
-
   const loadData = () =>
-    fetch(endpoint("/people"))
+    fetch(endpoint(baseurl, "/people"))
       .then(response => response.json())
       .then(data => {
         setPeople(data.data)
@@ -52,14 +59,14 @@ const Appledore: React.FC = () => {
   }, [])
 
   const createPerson = () => {
-    fetch(endpoint("/people"), {
+    fetch(endpoint(baseurl, "/people"), {
       method: "POST",
       body: JSON.stringify(formState) as any,
     }).then(() => resetForm())
   }
 
   const updatePerson = (id: number) => {
-    fetch(endpoint(`/people/${id}`), {
+    fetch(endpoint(baseurl, `/people/${id}`), {
       method: "PUT",
       body: JSON.stringify({
         ...formState,
@@ -76,7 +83,9 @@ const Appledore: React.FC = () => {
   }
 
   const deletePersonRequest = person_id => {
-    return fetch(endpoint(`/people/${person_id}`), { method: "DELETE" })
+    return fetch(endpoint(baseurl, `/people/${person_id}`), {
+      method: "DELETE",
+    })
   }
 
   const resetForm = () => {
@@ -97,6 +106,7 @@ const Appledore: React.FC = () => {
   return (
     <Page>
       <>
+        {process.env.LANTERN_ENV}
         <Modal
           danger
           open={deleteModalOpen}
