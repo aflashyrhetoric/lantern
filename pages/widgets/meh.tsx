@@ -41,7 +41,10 @@ export default function Meh() {
   return (
     <>
       {(!mehdata || isLoading) && (
-        <ClipLoader size={60} color="fff" loading={isLoading} />
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <ClipLoader size={60} color="fff" loading={isLoading} />{" "}
+          <p style={{ marginLeft: "8px" }}>Loading Meh's Product of the day.</p>
+        </div>
       )}
 
       {mehdata && !isLoading && (
