@@ -289,7 +289,7 @@ const Appledore: React.FC = (props: any) => {
               window.location.reload()
             })
           }}
-          rawRowData={people.map(p => ({ ...p, id: `${p.id}` }))}
+          rawRowData={people}
           rowData={people.map(p => ({
             ...p,
             id: `${p.id}`,
