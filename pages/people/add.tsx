@@ -3,12 +3,22 @@ import Page from "../../global/Page"
 
 import { createMuiTheme } from "@material-ui/core/styles"
 import { endpoint } from "../../helpers/api"
+import { getBaseURL } from "../../constants"
 
-export default function Home() {
+export async function getStaticProps() {
+  return {
+    props: {
+      baseurl: getBaseURL(process.env.LANTERN_ENV),
+    },
+  }
+}
+
+export default function AddPerson(props) {
+  const { baseurl } = props
   const [people, setPeople] = useState([])
 
   useEffect(() => {
-    fetch(endpoint('/people'))
+    fetch(endpoint(baseurl, "/people"))
       .then(response => response.json())
       .then(data => setPeople(data.data))
   }, [])
