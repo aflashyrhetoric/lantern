@@ -20,7 +20,7 @@ import { getBaseURL } from "../../constants"
 
 const styles = require("./styles.module.scss")
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   return {
     props: {
       baseurl: getBaseURL(process.env.LANTERN_ENV),
