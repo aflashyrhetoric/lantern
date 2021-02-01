@@ -274,8 +274,8 @@ const Appledore: React.FC = (props: any) => {
             })
           }}
           rawRowData={people.map(p => ({ ...p, id: `${p.id}` }))}
-          rowData={people
-            .map(p => ({
+          rowData={
+            people.map(p => ({
               ...p,
               id: `${p.id}`,
               dob:
@@ -286,21 +286,22 @@ const Appledore: React.FC = (props: any) => {
                 </a>
               ),
             }))
-            .sort((a, b) => {
-              if (people.length < 2) {
-                return 0
-              }
+            // .sort((a, b) => {
+            //   if (people.length < 2) {
+            //     return 0
+            //   }
 
-              if (a.last_name < b.last_name) {
-                return -1
-              }
-              if (a.last_name > b.last_name) {
-                return 1
-              }
-              if (a.last_name.split()[0] === b.last_name.split()[0]) {
-                return 0
-              }
-            })}
+            //   if (a.last_name < b.last_name) {
+            //     return -1
+            //   }
+            //   if (a.last_name > b.last_name) {
+            //     return 1
+            //   }
+            //   if (a.last_name.split()[0] === b.last_name.split()[0]) {
+            //     return 0
+            //   }
+            // })}
+          }
           headerData={[
             {
               header: "ID",
