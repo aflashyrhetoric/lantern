@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import moment from "moment"
+import Link from "next/link"
 import {
   Modal,
   Loading,
@@ -295,9 +296,9 @@ const Appledore: React.FC = (props: any) => {
             id: `${p.id}`,
             dob: p.dob !== null ? moment.utc(p.dob).format("YYYY-MM-DD") : "-",
             link: (
-              <a href={`/appledore/${p.id}`}>
+              <Link href={`/appledore/${p.id}`}>
                 <Launch20 className={styles.icon} />
-              </a>
+              </Link>
             ),
           }))}
           headerData={[
