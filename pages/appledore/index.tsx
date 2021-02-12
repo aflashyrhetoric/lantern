@@ -58,7 +58,6 @@ const Appledore: React.FC = (props: any) => {
 
   const initialize = () => {
     const t = Cookies.get("logged_in")
-    console.log(t)
     if (t === undefined || t === "") {
       setShowLogin(true)
     } else {
@@ -83,6 +82,7 @@ const Appledore: React.FC = (props: any) => {
       method: "POST",
       body: JSON.stringify(loginForm),
       credentials: "include",
+      mode: "cors",
     })
       .then((r: any) => r.json())
       .then((r: any) => {
@@ -96,6 +96,7 @@ const Appledore: React.FC = (props: any) => {
     fetch(endpoint(baseurl, "/auth/signup"), {
       method: "POST",
       body: JSON.stringify(loginForm),
+      mode: "cors",
     }).then(r => {
       setAuthType(AuthType.Login)
     })
@@ -110,6 +111,8 @@ const Appledore: React.FC = (props: any) => {
     fetch(endpoint(baseurl, "/people"), {
       method: "POST",
       body: JSON.stringify(formState) as any,
+      credentials: "include",
+      mode: "cors", 
     }).then(() => resetForm())
   }
 
@@ -123,6 +126,8 @@ const Appledore: React.FC = (props: any) => {
             ? null
             : moment.utc(formState.dob).format("YYYY-MM-DD"),
       }) as any,
+      credentials: "include",
+      mode: "cors",
     }).then(() => resetForm())
   }
 
@@ -133,6 +138,8 @@ const Appledore: React.FC = (props: any) => {
   const deletePersonRequest = person_id => {
     return fetch(endpoint(baseurl, `/people/${person_id}`), {
       method: "DELETE",
+      credentials: "include",
+      mode: "cors",
     })
   }
 
