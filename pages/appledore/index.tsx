@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import Cookies from "js-cookie"
 import moment from "moment"
 import Link from "next/link"
 import {
@@ -14,7 +15,7 @@ import { Launch20 } from "@carbon/icons-react"
 
 import Page from "../../global/Page"
 import LTable from "../../global/LTable"
-import { EditingState, Person } from "../../types"
+import { EditingState, LoginForm, Person } from "../../types"
 import getHandlers from "../../helpers/form/eventHandlers"
 import Validations from "../../helpers/form/validation"
 import { endpoint } from "../../helpers/api"
@@ -30,9 +31,18 @@ export async function getStaticProps() {
   }
 }
 
+enum AuthType {
+  Login = "Login",
+  Signup = "Sign Up",
+}
+
 const Appledore: React.FC = (props: any) => {
   const { baseurl } = props
   const [people, setPeople] = useState([])
+
+  const [authType, setAuthType] = useState<AuthType>(AuthType.Login)
+  const [showLogin, setShowLogin] = useState(false)
+  const [loginForm, setLoginForm] = useState<LoginForm>({} as LoginForm)
 
   // UI hooks
   const [personModalIsOpen, setPersonModalOpen] = useState(false)
@@ -46,17 +56,54 @@ const Appledore: React.FC = (props: any) => {
     EditingState.CREATE,
   )
 
-  const loadData = () =>
-    fetch(endpoint(baseurl, "/people"))
+  const initialize = () => {
+    const t = Cookies.get("logged_in")
+    console.log(t)
+    if (t === undefined || t === "") {
+      setShowLogin(true)
+    } else {
+      loadData()
+    }
+  }
+
+  const loadData = () => {
+    fetch(endpoint(baseurl, "/people"), {
+      credentials: "include",
+      mode: "cors",
+    })
       .then(response => response.json())
       .then(data => {
         setPeople(data.data)
         setLoading(false)
       })
+  }
+
+  const login = () => {
+    fetch(endpoint(baseurl, "/auth/login"), {
+      method: "POST",
+      body: JSON.stringify(loginForm),
+      credentials: "include",
+    })
+      .then((r: any) => r.json())
+      .then((r: any) => {
+        setShowLogin(false)
+        Cookies.set("logged_in", true)
+        // window.location.reload()
+      })
+  }
+
+  const signup = () => {
+    fetch(endpoint(baseurl, "/auth/signup"), {
+      method: "POST",
+      body: JSON.stringify(loginForm),
+    }).then(r => {
+      setAuthType(AuthType.Login)
+    })
+  }
 
   // Initial load
   useEffect(() => {
-    loadData()
+    initialize()
   }, [])
 
   const createPerson = () => {
@@ -123,6 +170,74 @@ const Appledore: React.FC = (props: any) => {
   return (
     <Page>
       <>
+        <Modal
+          open={showLogin}
+          modalHeading={authType}
+          primaryButtonText={authType}
+          secondaryButtonText="Cancel"
+          onBlur={() => setShowLogin(false)}
+          onRequestClose={() => setShowLogin(false)}
+          onRequestSubmit={() => {
+            if (authType === AuthType.Login) {
+              login()
+              return
+            }
+            if (authType === AuthType.Signup) {
+              signup()
+              return
+            }
+            return
+          }}
+        >
+          <Form className="some-class" onSubmit={() => {}}>
+            <TextInput
+              id="email"
+              name="email"
+              type="email"
+              value={(loginForm && loginForm.email) || ""}
+              invalid={invalidFields.includes("email")}
+              invalidText="A valid value is required"
+              labelText="Email"
+              onChange={e =>
+                setLoginForm({
+                  ...loginForm,
+                  email: e.target.value,
+                })
+              }
+            />
+            <div style={{ marginBottom: "20px" }} />
+            <TextInput
+              id="password"
+              name="password"
+              type="password"
+              value={(loginForm && loginForm.password) || ""}
+              invalid={invalidFields.includes("password")}
+              invalidText="A valid value is required"
+              labelText="Password"
+              onChange={e =>
+                setLoginForm({
+                  ...loginForm,
+                  password: e.target.value,
+                })
+              }
+            />
+            <div style={{ marginBottom: "10px" }} />
+            {
+              <a
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  setAuthType(
+                    authType === AuthType.Login
+                      ? AuthType.Signup
+                      : AuthType.Login,
+                  )
+                }
+              >
+                Switch to {authType === AuthType.Login ? "Signup" : "Login"}
+              </a>
+            }
+          </Form>
+        </Modal>
         <Modal
           danger
           open={deleteModalOpen}
