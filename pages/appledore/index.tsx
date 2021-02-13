@@ -88,6 +88,8 @@ const Appledore: React.FC = (props: any) => {
       .then((r: any) => {
         setShowLogin(false)
         Cookies.set("logged_in", true)
+
+        loadData()
         // window.location.reload()
       })
   }
@@ -112,7 +114,7 @@ const Appledore: React.FC = (props: any) => {
       method: "POST",
       body: JSON.stringify(formState) as any,
       credentials: "include",
-      mode: "cors", 
+      mode: "cors",
     }).then(() => resetForm())
   }
 
