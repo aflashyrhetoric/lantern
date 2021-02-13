@@ -89,7 +89,7 @@ const Appledore: React.FC = (props: any) => {
         setShowLogin(false)
         Cookies.set("logged_in", true)
 
-        loadData()
+        // loadData()
         // window.location.reload()
       })
   }
