@@ -414,17 +414,24 @@ const Appledore: React.FC = (props: any) => {
               window.location.reload()
             })
           }}
-          rawRowData={people}
-          rowData={people.map(p => ({
-            ...p,
-            id: `${p.id}`,
-            dob: p.dob !== null ? moment.utc(p.dob).format("YYYY-MM-DD") : "-",
-            link: (
-              <Link href={`/appledore/${p.id}`}>
-                <Launch20 className={styles.icon} />
-              </Link>
-            ),
-          }))}
+          rawRowData={people || []}
+          rowData={
+            people
+              ? people.map(p => ({
+                  ...p,
+                  id: `${p.id}`,
+                  dob:
+                    p.dob !== null
+                      ? moment.utc(p.dob).format("YYYY-MM-DD")
+                      : "-",
+                  link: (
+                    <Link href={`/appledore/${p.id}`}>
+                      <Launch20 className={styles.icon} />
+                    </Link>
+                  ),
+                }))
+              : []
+          }
           headerData={[
             {
               header: "ID",
