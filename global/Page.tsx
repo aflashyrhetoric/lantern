@@ -3,13 +3,14 @@ import Head from "next/head"
 import styles from "../styles/Home.module.scss"
 import LHeader from "../global/Header"
 
-export interface Page {
+export interface Props {
   logout?: Function
   loggedIn?: boolean
   children: any
 }
 
-const Home = ({ logout, loggedIn, children }) => {
+const Home = (props: Props) => {
+  const { logout, loggedIn, children } = props
   return (
     <div className={styles.container}>
       <Head>
@@ -22,7 +23,7 @@ const Home = ({ logout, loggedIn, children }) => {
       </Head>
 
       <main className={styles.main}>
-        <LHeader logout={logout} loggedIn={loggedIn}/>
+        <LHeader logout={logout} loggedIn={loggedIn} />
         {children}
       </main>
     </div>
