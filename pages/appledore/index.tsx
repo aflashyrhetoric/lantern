@@ -262,8 +262,8 @@ const Appledore: React.FC = (props: any) => {
           open={personModalIsOpen}
           modalHeading={
             editingMode === EditingState.CREATE
-              ? "Add dossier"
-              : "Update dossier"
+              ? "Add contact"
+              : "Update contact"
           }
           primaryButtonText={
             editingMode === EditingState.CREATE ? "Save" : "Update"
@@ -396,7 +396,7 @@ const Appledore: React.FC = (props: any) => {
         </Modal>
 
         <LTable
-          title="dossiers"
+          title="Contacts"
           openModal={() => setPersonModalOpen(true)}
           openDeleteModal={() => setDeleteModalOpen(true)}
           updateFormState={data => setFormState(data)}
@@ -425,9 +425,11 @@ const Appledore: React.FC = (props: any) => {
                       ? moment.utc(p.dob).format("YYYY-MM-DD")
                       : "-",
                   link: (
-                    <Link href={`/appledore/${p.id}`}>
-                      <Launch20 className={styles.icon} />
-                    </Link>
+                    <span style={{ cursor: "pointer" }}>
+                      <Link href={`/appledore/${p.id}`}>
+                        <Launch20 className={styles.icon} />
+                      </Link>
+                    </span>
                   ),
                 }))
               : []
