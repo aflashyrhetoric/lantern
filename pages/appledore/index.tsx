@@ -22,6 +22,7 @@ import getHandlers from "../../helpers/form/eventHandlers"
 import Validations from "../../helpers/form/validation"
 import { endpoint } from "../../helpers/api"
 import { getBaseURL } from "../../constants"
+import { keys } from "@material-ui/core/styles/createBreakpoints"
 
 const styles = require("./styles.module.scss")
 
@@ -41,6 +42,7 @@ const Appledore: React.FC = (props: any) => {
   const [showLogin, setShowLogin] = useState(false)
   const [loginForm, setLoginForm] = useState<LoginForm>({} as LoginForm)
   const [loggedIn, setLoggedIn] = useState(false)
+  const [invalidLogin, setInvalidLogin] = useState(false)
 
   // UI hooks
   const [personModalIsOpen, setPersonModalOpen] = useState(false)
@@ -65,6 +67,7 @@ const Appledore: React.FC = (props: any) => {
   }
 
   const loadData = () => {
+    setLoading(true)
     fetch(endpoint(baseurl, "/people"), {
       credentials: "include",
       mode: "cors",
@@ -77,18 +80,29 @@ const Appledore: React.FC = (props: any) => {
   }
 
   const login = () => {
+    setLoading(true)
+    setInvalidLogin(false)
     fetch(endpoint(baseurl, "/auth/login"), {
       method: "POST",
       body: JSON.stringify(loginForm),
       credentials: "include",
       mode: "cors",
     })
+      .then((r: any) => {
+        if (!r.ok) {
+          setInvalidLogin(true)
+          throw new Error("Invalid username or password")
+        }
+        return r
+      })
       .then((r: any) => r.json())
       .then((r: any) => {
-        setShowLogin(false)
         Cookies.set("logged_in", true)
 
         window.location.reload()
+      })
+      .catch(() => {
+        setLoading(false)
       })
   }
 
@@ -187,7 +201,7 @@ const Appledore: React.FC = (props: any) => {
   // })
 
   return (
-    <Page logout={logout}>
+    <Page logout={logout} loggedIn={loggedIn}>
       <>
         <Modal
           open={showLogin}
@@ -214,8 +228,8 @@ const Appledore: React.FC = (props: any) => {
               name="email"
               type="email"
               value={(loginForm && loginForm.email) || ""}
-              invalid={invalidFields.includes("email")}
-              invalidText="A valid value is required"
+              invalid={invalidLogin}
+              invalidText="The username or password was not successful - try again."
               labelText="Email"
               onChange={e =>
                 setLoginForm({
@@ -239,6 +253,18 @@ const Appledore: React.FC = (props: any) => {
                   password: e.target.value,
                 })
               }
+              onKeyUp={e => {
+                if (e.key === "Enter") {
+                  if (authType === AuthType.Login) {
+                    login()
+                    return
+                  }
+                  if (authType === AuthType.Signup) {
+                    signup()
+                    return
+                  }
+                }
+              }}
             />
             <div style={{ marginBottom: "10px" }} />
             {

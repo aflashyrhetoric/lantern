@@ -17,10 +17,11 @@ import {
 import { Logout20 } from "@carbon/icons-react"
 
 interface Props {
-  logout: Function
+  logout?: Function
+  loggedIn?: boolean
 }
 
-const LHeader = ({ logout }: Props) => {
+const LHeader = ({ logout = null, loggedIn }: Props) => {
   return (
     <>
       <HeaderContainer
@@ -47,19 +48,21 @@ const LHeader = ({ logout }: Props) => {
               </HeaderMenu> */}
             </HeaderNavigation>
             <HeaderGlobalBar>
-              <HeaderGlobalAction
-                aria-label="Search"
-                onClick={() => {
-                  if (Cookies.get("logged_in") !== undefined) {
-                    Cookies.remove("logged_in")
-                  }
+              {logout !== null && loggedIn && (
+                <HeaderGlobalAction
+                  aria-label="Search"
+                  onClick={() => {
+                    if (Cookies.get("logged_in") !== undefined) {
+                      Cookies.remove("logged_in")
+                    }
 
-                  logout()
-                  window.location.reload()
-                }}
-              >
-                <Logout20 />
-              </HeaderGlobalAction>
+                    logout()
+                    window.location.reload()
+                  }}
+                >
+                  <Logout20 />
+                </HeaderGlobalAction>
+              )}
               {/* <HeaderGlobalAction
                 aria-label="Notifications"
                 isActive

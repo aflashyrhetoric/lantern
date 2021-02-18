@@ -5,10 +5,11 @@ import LHeader from "../global/Header"
 
 export interface Page {
   logout?: Function
+  loggedIn?: boolean
   children: any
 }
 
-const Home = ({ logout = () => {}, children }) => {
+const Home = ({ logout, loggedIn, children }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -21,7 +22,7 @@ const Home = ({ logout = () => {}, children }) => {
       </Head>
 
       <main className={styles.main}>
-        <LHeader logout={logout} />
+        <LHeader logout={logout} loggedIn={loggedIn}/>
         {children}
       </main>
     </div>
