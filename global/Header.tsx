@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import Cookies from "js-cookie"
 import {
   HeaderContainer,
   Header,
@@ -7,13 +8,19 @@ import {
   HeaderName,
   HeaderNavigation,
   HeaderMenuItem,
-  HeaderMenu,
+  HeaderGlobalBar,
+  HeaderGlobalAction,
   SideNav,
   SideNavItems,
   HeaderSideNavItems,
 } from "carbon-components-react"
+import { Logout20 } from "@carbon/icons-react"
 
-const LHeader: React.FC = () => {
+interface Props {
+  logout: Function
+}
+
+const LHeader = ({ logout }: Props) => {
   return (
     <>
       <HeaderContainer
@@ -31,9 +38,7 @@ const LHeader: React.FC = () => {
             <HeaderNavigation aria-label="Lantern">
               <HeaderMenuItem href="/scan-products">echo</HeaderMenuItem>
               <HeaderMenuItem href="/appledore">appledore</HeaderMenuItem>
-              <HeaderMenuItem href="/utilities">
-               misc 
-              </HeaderMenuItem>
+              <HeaderMenuItem href="/utilities">misc</HeaderMenuItem>
               {/* <HeaderMenuItem href="#">Link 3</HeaderMenuItem>
               <HeaderMenu aria-label="Link 4" menuLinkName="Link 4">
                 <HeaderMenuItem href="#">Sub-link 1</HeaderMenuItem>
@@ -41,6 +46,34 @@ const LHeader: React.FC = () => {
                 <HeaderMenuItem href="#">Sub-link 3</HeaderMenuItem>
               </HeaderMenu> */}
             </HeaderNavigation>
+            <HeaderGlobalBar>
+              <HeaderGlobalAction
+                aria-label="Search"
+                onClick={() => {
+                  if (Cookies.get("logged_in") !== undefined) {
+                    Cookies.remove("logged_in")
+                  }
+
+                  logout()
+                  window.location.reload()
+                }}
+              >
+                <Logout20 />
+              </HeaderGlobalAction>
+              {/* <HeaderGlobalAction
+                aria-label="Notifications"
+                isActive
+                onClick={action("notification click")}
+              >
+                <Notification20 />
+              </HeaderGlobalAction>
+              <HeaderGlobalAction
+                aria-label="App Switcher"
+                onClick={action("app-switcher click")}
+              >
+                <AppSwitcher20 />
+              </HeaderGlobalAction> */}
+            </HeaderGlobalBar>
             <SideNav
               aria-label="Side navigation"
               expanded={isSideNavExpanded}

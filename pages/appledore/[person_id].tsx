@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import Cookies from "js-cookie"
 import { useRouter } from "next/router"
 
 import {
@@ -48,8 +49,13 @@ const Dossier = props => {
       })
 
   useEffect(() => {
-    if (person_id) {
-      loadData()
+    const t = Cookies.get("logged_in")
+    if (t === undefined || t === "") {
+      window.location.replace("/appledore")
+    } else {
+      if (person_id) {
+        loadData()
+      }
     }
   }, [person_id])
 

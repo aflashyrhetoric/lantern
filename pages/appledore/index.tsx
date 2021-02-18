@@ -3,6 +3,8 @@ import Cookies from "js-cookie"
 import moment from "moment"
 import Link from "next/link"
 import {
+  Button,
+  ButtonSet,
   Modal,
   Loading,
   Form,
@@ -15,7 +17,7 @@ import { Launch20 } from "@carbon/icons-react"
 
 import Page from "../../global/Page"
 import LTable from "../../global/LTable"
-import { EditingState, LoginForm, Person } from "../../types"
+import { AuthType, EditingState, LoginForm, Person } from "../../types"
 import getHandlers from "../../helpers/form/eventHandlers"
 import Validations from "../../helpers/form/validation"
 import { endpoint } from "../../helpers/api"
@@ -31,11 +33,6 @@ export async function getStaticProps() {
   }
 }
 
-enum AuthType {
-  Login = "Login",
-  Signup = "Sign Up",
-}
-
 const Appledore: React.FC = (props: any) => {
   const { baseurl } = props
   const [people, setPeople] = useState([])
@@ -43,6 +40,7 @@ const Appledore: React.FC = (props: any) => {
   const [authType, setAuthType] = useState<AuthType>(AuthType.Login)
   const [showLogin, setShowLogin] = useState(false)
   const [loginForm, setLoginForm] = useState<LoginForm>({} as LoginForm)
+  const [loggedIn, setLoggedIn] = useState(false)
 
   // UI hooks
   const [personModalIsOpen, setPersonModalOpen] = useState(false)
@@ -61,6 +59,7 @@ const Appledore: React.FC = (props: any) => {
     if (t === undefined || t === "") {
       setShowLogin(true)
     } else {
+      setLoggedIn(true)
       loadData()
     }
   }
@@ -89,18 +88,29 @@ const Appledore: React.FC = (props: any) => {
         setShowLogin(false)
         Cookies.set("logged_in", true)
 
-        // loadData()
-        // window.location.reload()
+        window.location.reload()
       })
   }
 
   const signup = () => {
+    setLoading(true)
     fetch(endpoint(baseurl, "/auth/signup"), {
       method: "POST",
       body: JSON.stringify(loginForm),
       mode: "cors",
     }).then(r => {
+      setLoading(false)
       setAuthType(AuthType.Login)
+    })
+  }
+
+  const logout = () => {
+    fetch(endpoint(baseurl, "/auth/logout"), {
+      method: "POST",
+      mode: "cors",
+      credentials: "include",
+    }).then(r => {
+      window.location.replace("/appledore")
     })
   }
 
@@ -177,11 +187,11 @@ const Appledore: React.FC = (props: any) => {
   // })
 
   return (
-    <Page>
+    <Page logout={logout}>
       <>
         <Modal
           open={showLogin}
-          modalHeading={authType}
+          modalHeading={`Lantern: ${authType}`}
           primaryButtonText={authType}
           secondaryButtonText="Cancel"
           onBlur={() => setShowLogin(false)}
@@ -395,85 +405,110 @@ const Appledore: React.FC = (props: any) => {
           </Form>
         </Modal>
 
-        <LTable
-          title="Contacts"
-          openModal={() => setPersonModalOpen(true)}
-          openDeleteModal={() => setDeleteModalOpen(true)}
-          updateFormState={data => setFormState(data)}
-          updateEditingMode={setEditingMode}
-          onBatchDelete={(selectedRawRowsData: any[]) => {
-            setLoading(true)
+        {!loggedIn && !showLogin && (
+          <ButtonSet>
+            <Button
+              kind="secondary"
+              onClick={() => {
+                setAuthType(AuthType.Signup)
+                setShowLogin(true)
+              }}
+            >
+              Sign up
+            </Button>
+            <Button
+              kind="primary"
+              onClick={() => {
+                setAuthType(AuthType.Login)
+                setShowLogin(true)
+              }}
+            >
+              Login
+            </Button>
+          </ButtonSet>
+        )}
 
-            const promises = selectedRawRowsData.map(data =>
-              deletePersonRequest(data),
-            )
+        {loggedIn && (
+          <LTable
+            title="Contacts"
+            openModal={() => setPersonModalOpen(true)}
+            openDeleteModal={() => setDeleteModalOpen(true)}
+            updateFormState={data => setFormState(data)}
+            updateEditingMode={setEditingMode}
+            onBatchDelete={(selectedRawRowsData: any[]) => {
+              setLoading(true)
 
-            Promise.all(promises).then(() => {
-              setLoading(false)
+              const promises = selectedRawRowsData.map(data =>
+                deletePersonRequest(data),
+              )
 
-              window.location.reload()
-            })
-          }}
-          rawRowData={people || []}
-          rowData={
-            people
-              ? people.map(p => ({
-                  ...p,
-                  id: `${p.id}`,
-                  dob:
-                    p.dob !== null
-                      ? moment.utc(p.dob).format("YYYY-MM-DD")
-                      : "-",
-                  link: (
-                    <span style={{ cursor: "pointer" }}>
-                      <Link href={`/appledore/${p.id}`}>
-                        <Launch20 className={styles.icon} />
-                      </Link>
-                    </span>
-                  ),
-                }))
-              : []
-          }
-          headerData={[
-            {
-              header: "ID",
-              key: "id",
-            },
-            {
-              header: "",
-              key: "link",
-            },
-            {
-              header: "Last",
-              key: "last_name",
-            },
-            {
-              header: "First",
-              key: "first_name",
-            },
-            {
-              header: "Career",
-              key: "career",
-            },
-            {
-              header: "Mobile",
-              key: "mobile",
-            },
-            {
-              header: "Email",
-              key: "email",
-            },
-            {
-              header: "Address",
-              key: "address",
-            },
-            {
-              header: "DOB",
-              key: "dob",
-            },
-          ]}
-          disableBatchEdit
-        />
+              Promise.all(promises).then(() => {
+                setLoading(false)
+
+                window.location.reload()
+              })
+            }}
+            rawRowData={people || []}
+            rowData={
+              people
+                ? people.map(p => ({
+                    ...p,
+                    id: `${p.id}`,
+                    dob:
+                      p.dob !== null
+                        ? moment.utc(p.dob).format("YYYY-MM-DD")
+                        : "-",
+                    link: (
+                      <span style={{ cursor: "pointer" }}>
+                        <Link href={`/appledore/${p.id}`}>
+                          <Launch20 className={styles.icon} />
+                        </Link>
+                      </span>
+                    ),
+                  }))
+                : []
+            }
+            headerData={[
+              {
+                header: "ID",
+                key: "id",
+              },
+              {
+                header: "",
+                key: "link",
+              },
+              {
+                header: "Last",
+                key: "last_name",
+              },
+              {
+                header: "First",
+                key: "first_name",
+              },
+              {
+                header: "Career",
+                key: "career",
+              },
+              {
+                header: "Mobile",
+                key: "mobile",
+              },
+              {
+                header: "Email",
+                key: "email",
+              },
+              {
+                header: "Address",
+                key: "address",
+              },
+              {
+                header: "DOB",
+                key: "dob",
+              },
+            ]}
+            disableBatchEdit
+          />
+        )}
       </>
     </Page>
   )
