@@ -22,7 +22,6 @@ import getHandlers from "../../helpers/form/eventHandlers"
 import Validations from "../../helpers/form/validation"
 import { endpoint } from "../../helpers/api"
 import { getBaseURL } from "../../constants"
-import { keys } from "@material-ui/core/styles/createBreakpoints"
 
 const styles = require("./styles.module.scss")
 
@@ -115,16 +114,6 @@ const Appledore: React.FC = (props: any) => {
     }).then(r => {
       setLoading(false)
       setAuthType(AuthType.Login)
-    })
-  }
-
-  const logout = () => {
-    fetch(endpoint(baseurl, "/auth/logout"), {
-      method: "POST",
-      mode: "cors",
-      credentials: "include",
-    }).then(r => {
-      window.location.replace("/appledore")
     })
   }
 
