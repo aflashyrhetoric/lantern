@@ -486,8 +486,13 @@ const Appledore: React.FC = (props: any) => {
                         : "-",
                     link: (
                       <span style={{ cursor: "pointer" }}>
-                        <Link href={`/appledore/${p.id}`}>
-                          <Launch20 className={styles.icon} />
+                        <Link
+                          href={`/appledore/${encodeURIComponent(p.id)}`}
+                          passHref
+                        >
+                          <a href="">
+                            <Launch20 className={styles.icon} />
+                          </a>
                         </Link>
                       </span>
                     ),
