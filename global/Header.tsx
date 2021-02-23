@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import Cookies from "js-cookie"
 import {
   HeaderContainer,
@@ -16,12 +16,14 @@ import {
 } from "carbon-components-react"
 import { Logout20 } from "@carbon/icons-react"
 
+import { UserContext } from "../pages/_app"
+
 interface Props {
-  logout?: Function
   loggedIn?: boolean
 }
 
-const LHeader = ({ logout = null, loggedIn }: Props) => {
+const LHeader = () => {
+  const { loggedIn, logout } = useContext(UserContext)
   return (
     <>
       <HeaderContainer

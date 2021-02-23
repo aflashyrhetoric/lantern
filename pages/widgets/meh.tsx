@@ -78,7 +78,11 @@ export default function Meh() {
                 {mehdata.price}
               </Typography>
               <div className={styles.buttonWrapper}>
-                <Button href="https://meh.com" variant="contained">
+                <Button
+                  href="https://meh.com"
+                  variant="contained"
+                  target="_blank"
+                >
                   Go to Meh
                 </Button>
 

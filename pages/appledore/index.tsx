@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import Cookies from "js-cookie"
 import moment from "moment"
 import Link from "next/link"
@@ -22,19 +22,13 @@ import getHandlers from "../../helpers/form/eventHandlers"
 import Validations from "../../helpers/form/validation"
 import { endpoint } from "../../helpers/api"
 import { getBaseURL } from "../../constants"
+import { UserContext } from "../_app"
 
 const styles = require("./styles.module.scss")
 
-export async function getStaticProps() {
-  return {
-    props: {
-      baseurl: getBaseURL(process.env.LANTERN_ENV),
-    },
-  }
-}
-
 const Appledore: React.FC = (props: any) => {
   const { baseurl } = props
+  const { logout } = useContext(UserContext)
   const [people, setPeople] = useState([])
 
   const [authType, setAuthType] = useState<AuthType>(AuthType.Login)
