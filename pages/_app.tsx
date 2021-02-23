@@ -23,9 +23,8 @@ export interface AppContext {
 //   },
 // })
 
-const loggedIn = Cookies.get("logged_in")
-const baseURL = getBaseURL(process.env.LANTERN_ENV)
-const uc: AppContext = {
+// const baseURL = getBaseURL(process.env.LANTERN_ENV)
+const uc = (baseURL): AppContext => ({
   loggedIn,
   logout: () => {
     fetch(endpoint(baseURL, "/auth/logout"), {
@@ -38,11 +37,13 @@ const uc: AppContext = {
   },
   logIn: () => Cookies.set("logged_in", true),
   baseurl: baseURL,
-}
+})
 
 export const UserContext = React.createContext(uc)
 
 function Lantern({ Component, pageProps }) {
+  const loggedIn = Cookies.get("logged_in")
+
   return (
     // <ThemeProvider theme={theme}>
     <UserContext.Provider value={uc}>
@@ -54,12 +55,5 @@ function Lantern({ Component, pageProps }) {
   )
 }
 
-Lantern.getInitialProps = async () => {
-  return {
-    props: {
-      baseurl: getBaseURL(process.env.LANTERN_ENV),
-    },
-  }
-}
 
 export default Lantern
