@@ -41,11 +41,24 @@ const Dossier = props => {
   const [loading, setLoading] = useState(false)
 
   const loadData = () =>
-    fetch(endpoint(baseurl, `/people/${person_id}`))
-      .then(response => response.json())
+    fetch(endpoint(baseurl, `/people/${person_id}`), {
+      credentials: "include",
+      mode: "cors",
+    })
+      .then(response => {
+        console.log(response)
+        if (response.status !== 403) {
+          return response.json()
+        } else {
+          window.location.replace("/appledore")
+        }
+      })
       .then(data => {
         setPerson(data.data)
         setLoading(false)
+      })
+      .catch(() => {
+        window.location.replace("/appledore")
       })
 
   useEffect(() => {
