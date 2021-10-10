@@ -33,13 +33,15 @@ const LHeader = ({ logout = null, loggedIn }: Props) => {
               onClick={onClickSideNavExpand}
               isActive={isSideNavExpanded}
             />
-            <HeaderName href="/" prefix="LNTRN">
-              GO
-            </HeaderName>
+            <HeaderName href="/" prefix="LANTERN"></HeaderName>
             <HeaderNavigation aria-label="Lantern">
-              <HeaderMenuItem href="/scan-products">echo</HeaderMenuItem>
-              <HeaderMenuItem href="/appledore">appledore</HeaderMenuItem>
-              <HeaderMenuItem href="/utilities">misc</HeaderMenuItem>
+              <HeaderMenuItem href="/scan-products">
+                scan products
+              </HeaderMenuItem>
+              <HeaderMenuItem href="/appledore">
+                appledore vaults
+              </HeaderMenuItem>
+              <HeaderMenuItem href="/utilities">widgets</HeaderMenuItem>
               {/* <HeaderMenuItem href="#">Link 3</HeaderMenuItem>
               <HeaderMenu aria-label="Link 4" menuLinkName="Link 4">
                 <HeaderMenuItem href="#">Sub-link 1</HeaderMenuItem>
@@ -84,9 +86,13 @@ const LHeader = ({ logout = null, loggedIn }: Props) => {
             >
               <SideNavItems>
                 <HeaderSideNavItems>
-                  <HeaderMenuItem href="/scan-products">echo</HeaderMenuItem>
-                  <HeaderMenuItem href="/appledore">appledore</HeaderMenuItem>
-                  <HeaderMenuItem href="/utilities">misc</HeaderMenuItem>
+                  <HeaderMenuItem href="/scan-products">
+                    scan products
+                  </HeaderMenuItem>
+                  <HeaderMenuItem href="/appledore">
+                    appledore vaults
+                  </HeaderMenuItem>
+                  <HeaderMenuItem href="/utilities">widgets</HeaderMenuItem>
                   {/* <HeaderMenuItem href="#">Link 3</HeaderMenuItem>
                   <HeaderMenu aria-label="Link 4" menuLinkName="Link 4">
                     <HeaderMenuItem href="#">Sub-link 1</HeaderMenuItem>
