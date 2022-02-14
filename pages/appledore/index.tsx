@@ -86,6 +86,7 @@ const Appledore: React.FC = (props: any) => {
       method: "POST",
       body: JSON.stringify(loginForm),
       credentials: "include",
+      headers: new Headers({ "content-type": "application/json" }),
       mode: "cors",
     })
       .then((r: any) => {
@@ -108,9 +109,13 @@ const Appledore: React.FC = (props: any) => {
 
   const signup = () => {
     setLoading(true)
-    fetch(endpoint(baseurl, "/auth/signup"), {
+    const e = endpoint(baseurl, "/register")
+    console.log(e)
+    // console.log(JSON.stringify(loginForm))
+    fetch(e, {
       method: "POST",
       body: JSON.stringify(loginForm),
+      headers: new Headers({ "content-type": "application/json" }),
       mode: "cors",
     }).then(r => {
       setLoading(false)

@@ -5,7 +5,7 @@
 
 export const getBaseURL = (env: string) => {
   if (env === "development") {
-    return "http://localhost:8080/api"
+    return "http://localhost/api"
   }
   if (env === "production") {
     return process.env.API_URL
