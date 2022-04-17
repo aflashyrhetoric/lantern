@@ -5,12 +5,16 @@ import { useRouter } from "next/router"
 import {
   ButtonSet,
   Button,
+  DatePicker,
+  DatePickerInput,
+  Modal,
   StructuredListWrapper,
   StructuredListHead,
   StructuredListRow,
   StructuredListBody,
   StructuredListCell,
   TextArea,
+  TextInput,
 } from "carbon-components-react"
 import { TrashCan20 } from "@carbon/icons-react"
 
@@ -34,7 +38,9 @@ const Dossier = props => {
   const router = useRouter()
   const { person_id } = router.query
 
+  const [modalIsOpen, setModalIsOpen] = useState(false)
   const [person, setPerson] = useState<Person>(null)
+  const [formState, setFormState] = useState(person || {})
   const [noteForm, setNoteForm] = useState("")
   const [pressurePointForm, setPressurePointForm] = useState("")
 
@@ -126,34 +132,59 @@ const Dossier = props => {
   return (
     <Page>
       {!person ||
-        (person.first_name === "" && (
+        (person?.first_name === "" && (
           <a href="/appledore">
             User could not load and may not exist - return to Appledore
           </a>
         ))}
-      {person && person.first_name !== "" && (
+      {person?.first_name && (
         <div className={styles.pageInner}>
-          <h1>
-            {" "}
-            {person.first_name} {person.last_name}{" "}
-          </h1>
+          <div style={{ display: "inline-flex" }}>
+            <h1>
+              {" "}
+              {person.first_name} {person.last_name}{" "}
+            </h1>
+            <Button size="sm" kind="secondary">
+              Edit
+            </Button>
+          </div>
           <StructuredListWrapper ariaLabel="Structured list">
             <StructuredListHead>
               <StructuredListRow head tabIndex={0}>
-                <StructuredListCell head>Career</StructuredListCell>
-                <StructuredListCell head>Email</StructuredListCell>
-                <StructuredListCell head>Mobile</StructuredListCell>
-                <StructuredListCell head>Address</StructuredListCell>
-                <StructuredListCell head>DOB</StructuredListCell>
+                {person.career && (
+                  <StructuredListCell head>Career</StructuredListCell>
+                )}
+                {person.email && (
+                  <StructuredListCell head>Email</StructuredListCell>
+                )}
+                {person.mobile && (
+                  <StructuredListCell head>Mobile</StructuredListCell>
+                )}
+                {person.address && (
+                  <StructuredListCell head>Address</StructuredListCell>
+                )}
+                {person.dob && (
+                  <StructuredListCell head>DOB</StructuredListCell>
+                )}
               </StructuredListRow>
             </StructuredListHead>
             <StructuredListBody>
               <StructuredListRow tabIndex={0}>
-                <StructuredListCell>{person.career}</StructuredListCell>
-                <StructuredListCell>{person.email}</StructuredListCell>
-                <StructuredListCell>{person.mobile}</StructuredListCell>
-                <StructuredListCell>{person.address}</StructuredListCell>
-                <StructuredListCell>{person.dob}</StructuredListCell>
+                {person.career && (
+                  <StructuredListCell>{person.career}</StructuredListCell>
+                )}
+                {person.email && (
+                  <StructuredListCell>{person.email}</StructuredListCell>
+                )}
+                {person.mobile && (
+                  <StructuredListCell>{person.mobile}</StructuredListCell>
+                )}
+                {person.address && (
+                  <StructuredListCell>{person.address}</StructuredListCell>
+                )}
+                {person.dob && (
+                  <StructuredListCell>{person.dob}</StructuredListCell>
+                )}
               </StructuredListRow>
             </StructuredListBody>
           </StructuredListWrapper>
@@ -244,6 +275,136 @@ const Dossier = props => {
           )}
         </div>
       )}
+      <Modal
+        open={personModalIsOpen}
+        modalHeading={
+          editingMode === EditingState.CREATE ? "Add contact" : "Update contact"
+        }
+        primaryButtonText={
+          editingMode === EditingState.CREATE ? "Save" : "Update"
+        }
+        secondaryButtonText="Cancel"
+        selectorPrimaryFocus="#first-name"
+        onRequestSubmit={() => {
+          setLoading(true)
+          if (editingMode === EditingState.CREATE) {
+            createPerson()
+          }
+          if (editingMode === EditingState.UPDATE) {
+            updatePerson(formState.id)
+          }
+        }}
+        onRequestClose={() => {
+          resetForm()
+          setPersonModalOpen(false)
+        }}
+        onBlur={() => {
+          resetForm()
+          setPersonModalOpen(false)
+        }}
+      >
+        {/* Loading spinner for table */}
+        <Loading active={loading} />
+
+        <Form className="some-class" onSubmit={() => {}}>
+          <FormGroup legendText="Basic Information">
+            <TextInput
+              id="first-name"
+              name="first_name"
+              value={(formState && formState.first_name) || ""}
+              placeholder="Thomas"
+              invalid={invalidFields.includes("first_name")}
+              invalidText="A valid value is required"
+              labelText="First name"
+              onChange={e =>
+                handleTextInputChange(e, "first_name", [Validations.IsRequired])
+              }
+            />
+            <div style={{ marginBottom: "10px" }} />
+            <TextInput
+              id="last-name"
+              name="last_name"
+              value={(formState && formState.last_name) || ""}
+              placeholder="Shelby"
+              invalid={invalidFields.includes("last_name")}
+              invalidText="A valid value is required"
+              labelText="Last name"
+              onChange={e => handleTextInputChange(e, "last_name", [])}
+            />
+            <div style={{ marginBottom: "10px" }} />
+            <TextInput
+              id="career"
+              name="career"
+              value={(formState && formState.career) || ""}
+              placeholder="Engineer"
+              invalid={invalidFields.includes("career")}
+              invalidText="A valid value is required"
+              labelText="Career"
+              onChange={e => handleTextInputChange(e, "career", [])}
+            />
+            <div style={{ marginBottom: "10px" }} />
+            <TextInput
+              id="mobile"
+              name="mobile"
+              value={(formState && formState.mobile) || ""}
+              placeholder="555-1242"
+              invalid={invalidFields.includes("mobile")}
+              invalidText="A valid value is required"
+              labelText="Mobile"
+              onChange={e => handlePhoneNumberInputChange(e, "mobile")}
+            />
+            <div style={{ marginBottom: "10px" }} />
+            <TextInput
+              id="email"
+              name="email"
+              value={(formState && formState.email) || ""}
+              placeholder="Enter email"
+              invalid={invalidFields.includes("email")}
+              invalidText="A valid value is required"
+              labelText="Email"
+              onChange={e => handleTextInputChange(e, "email")}
+            />
+            <div style={{ marginBottom: "10px" }} />
+            <TextInput
+              id="address"
+              name="address"
+              value={(formState && formState.address) || ""}
+              placeholder="Enter address"
+              invalid={invalidFields.includes("address")}
+              invalidText="A valid value is required"
+              labelText="Address"
+              onChange={e => handleTextInputChange(e, "address", [])}
+            />
+            <div style={{ marginBottom: "10px" }} />
+            <DatePicker
+              id="date-picker"
+              datePickerType="single"
+              dateFormat="Y-m-d"
+              style={{ marginBottom: "10px" }}
+              value={
+                formState &&
+                formState.dob &&
+                moment.utc(formState.dob).format("YYYY-MM-DD")
+              }
+              onChange={event => {
+                setFormState({
+                  ...formState,
+                  dob: moment(event[0]).format("YYYY-MM-DD"),
+                })
+              }}
+            >
+              <DatePickerInput
+                id="date-picker-input-id"
+                invalid={invalidFields.includes("dob")}
+                iconDescription="Select a dob"
+                labelText="DOB"
+                placeholder="yyyy-mm-dd"
+                type="text"
+              />
+            </DatePicker>
+          </FormGroup>
+        </Form>
+      </Modal>
     </Page>
   )
 }

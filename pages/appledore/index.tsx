@@ -386,7 +386,7 @@ const Appledore: React.FC = (props: any) => {
                 invalidText="A valid value is required"
                 labelText="Email"
                 onChange={e =>
-                  handleTextInputChange(e, "email", [Validations.IsRequired])
+                  handleTextInputChange(e, "email")
                 }
               />
               <div style={{ marginBottom: "10px" }} />
