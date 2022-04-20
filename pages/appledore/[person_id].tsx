@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import Cookies from "js-cookie"
+import moment from "moment"
 import { useRouter } from "next/router"
 
 import {
@@ -7,6 +8,9 @@ import {
   Button,
   DatePicker,
   DatePickerInput,
+  Form,
+  FormGroup,
+  Loading,
   Modal,
   StructuredListWrapper,
   StructuredListHead,
@@ -20,8 +24,11 @@ import { TrashCan20 } from "@carbon/icons-react"
 
 import Page from "../../global/Page"
 import { endpoint } from "../../helpers/api"
-import { Person } from "../../types"
+import { EditingState, Person } from "../../types"
 import { getBaseURL } from "../../constants"
+import { createPerson, updatePerson } from "../api/person"
+import getHandlers from "../../helpers/form/eventHandlers"
+import Validations from "../../helpers/form/validation"
 
 const styles = require("./styles.module.scss")
 
@@ -38,13 +45,22 @@ const Dossier = props => {
   const router = useRouter()
   const { person_id } = router.query
 
+  const [editingMode, setEditingMode] = useState(EditingState.INACTIVE)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [person, setPerson] = useState<Person>(null)
-  const [formState, setFormState] = useState(person || {})
+  const [formState, setFormState] = useState<Person>(person || ({} as Person))
+  const [invalidFields, setInvalidFields] = useState<string[]>([])
   const [noteForm, setNoteForm] = useState("")
   const [pressurePointForm, setPressurePointForm] = useState("")
 
   const [loading, setLoading] = useState(false)
+
+  const { handleTextInputChange, handlePhoneNumberInputChange } = getHandlers(
+    formState,
+    setFormState,
+    invalidFields,
+    setInvalidFields,
+  )
 
   const loadData = () =>
     fetch(endpoint(baseurl, `/people/${person_id}`), {
@@ -129,6 +145,13 @@ const Dossier = props => {
     })
   }
 
+  const resetForm = () => {
+    setModalIsOpen(false)
+    setLoading(true)
+    setFormState(null)
+    loadData()
+  }
+
   return (
     <Page>
       {!person ||
@@ -139,12 +162,22 @@ const Dossier = props => {
         ))}
       {person?.first_name && (
         <div className={styles.pageInner}>
-          <div style={{ display: "inline-flex" }}>
+          <div
+            style={{ display: "inline-flex", justifyContent: "space-between" }}
+          >
             <h1>
               {" "}
               {person.first_name} {person.last_name}{" "}
             </h1>
-            <Button size="sm" kind="secondary">
+            <Button
+              size="sm"
+              kind="secondary"
+              onClick={() => {
+                setModalIsOpen(!modalIsOpen)
+                setFormState(person || ({} as Person))
+                setEditingMode(EditingState.UPDATE)
+              }}
+            >
               Edit
             </Button>
           </div>
@@ -276,7 +309,7 @@ const Dossier = props => {
         </div>
       )}
       <Modal
-        open={personModalIsOpen}
+        open={modalIsOpen}
         modalHeading={
           editingMode === EditingState.CREATE ? "Add contact" : "Update contact"
         }
@@ -287,20 +320,17 @@ const Dossier = props => {
         selectorPrimaryFocus="#first-name"
         onRequestSubmit={() => {
           setLoading(true)
-          if (editingMode === EditingState.CREATE) {
-            createPerson()
-          }
           if (editingMode === EditingState.UPDATE) {
-            updatePerson(formState.id)
+            updatePerson(baseurl, formState, formState.id, resetForm)
           }
         }}
         onRequestClose={() => {
           resetForm()
-          setPersonModalOpen(false)
+          setModalIsOpen(false)
         }}
         onBlur={() => {
           resetForm()
-          setPersonModalOpen(false)
+          setModalIsOpen(false)
         }}
       >
         {/* Loading spinner for table */}

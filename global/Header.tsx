@@ -39,7 +39,7 @@ const LHeader = ({ logout = null, loggedIn }: Props) => {
                 scan products
               </HeaderMenuItem>
               <HeaderMenuItem href="/appledore">
-                appledore vaults
+                appledore
               </HeaderMenuItem>
               <HeaderMenuItem href="/utilities">widgets</HeaderMenuItem>
               {/* <HeaderMenuItem href="#">Link 3</HeaderMenuItem>
@@ -90,7 +90,7 @@ const LHeader = ({ logout = null, loggedIn }: Props) => {
                     scan products
                   </HeaderMenuItem>
                   <HeaderMenuItem href="/appledore">
-                    appledore vaults
+                    appledore
                   </HeaderMenuItem>
                   <HeaderMenuItem href="/utilities">widgets</HeaderMenuItem>
                   {/* <HeaderMenuItem href="#">Link 3</HeaderMenuItem>

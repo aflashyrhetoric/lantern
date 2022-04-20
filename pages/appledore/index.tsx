@@ -23,6 +23,12 @@ import Validations from "../../helpers/form/validation"
 import { endpoint } from "../../helpers/api"
 import { getBaseURL } from "../../constants"
 import { keys } from "@material-ui/core/styles/createBreakpoints"
+import {
+  createPerson,
+  deletePerson,
+  deletePersonRequest,
+  updatePerson,
+} from "../api/person"
 
 const styles = require("./styles.module.scss")
 
@@ -147,41 +153,41 @@ const Appledore: React.FC = (props: any) => {
     initialize()
   }, [])
 
-  const createPerson = () => {
-    fetch(endpoint(baseurl, "/people"), {
-      method: "POST",
-      body: JSON.stringify(formState) as any,
-      credentials: "include",
-      mode: "cors",
-    }).then(() => resetForm())
-  }
+  // const createPerson = () => {
+  //   fetch(endpoint(baseurl, "/people"), {
+  //     method: "POST",
+  //     body: JSON.stringify(formState) as any,
+  //     credentials: "include",
+  //     mode: "cors",
+  //   }).then(() => resetForm())
+  // }
 
-  const updatePerson = (id: number) => {
-    fetch(endpoint(baseurl, `/people/${id}`), {
-      method: "PUT",
-      body: JSON.stringify({
-        ...formState,
-        dob:
-          formState.dob === null
-            ? null
-            : moment.utc(formState.dob).format("YYYY-MM-DD"),
-      }) as any,
-      credentials: "include",
-      mode: "cors",
-    }).then(() => resetForm())
-  }
+  // const updatePerson = (id: number) => {
+  //   fetch(endpoint(baseurl, `/people/${id}`), {
+  //     method: "PUT",
+  //     body: JSON.stringify({
+  //       ...formState,
+  //       dob:
+  //         formState.dob === null
+  //           ? null
+  //           : moment.utc(formState.dob).format("YYYY-MM-DD"),
+  //     }) as any,
+  //     credentials: "include",
+  //     mode: "cors",
+  //   }).then(() => resetForm())
+  // }
 
-  const deletePerson = (person_id: number) => {
-    deletePersonRequest(person_id).then(() => resetForm())
-  }
+  // const deletePerson = (person_id: number) => {
+  //   deletePersonRequest(person_id).then(() => resetForm())
+  // }
 
-  const deletePersonRequest = person_id => {
-    return fetch(endpoint(baseurl, `/people/${person_id}`), {
-      method: "DELETE",
-      credentials: "include",
-      mode: "cors",
-    })
-  }
+  // const deletePersonRequest = person_id => {
+  //   return fetch(endpoint(baseurl, `/people/${person_id}`), {
+  //     method: "DELETE",
+  //     credentials: "include",
+  //     mode: "cors",
+  //   })
+  // }
 
   const resetForm = () => {
     setDeleteModalOpen(false)
@@ -305,7 +311,7 @@ const Appledore: React.FC = (props: any) => {
           secondaryButtonText="No"
           onBlur={() => setDeleteModalOpen(false)}
           onRequestClose={() => setDeleteModalOpen(false)}
-          onRequestSubmit={() => deletePerson(formState.id)}
+          onRequestSubmit={() => deletePerson(baseurl, formState.id, resetForm)}
         />
 
         <Modal
@@ -323,10 +329,10 @@ const Appledore: React.FC = (props: any) => {
           onRequestSubmit={() => {
             setLoading(true)
             if (editingMode === EditingState.CREATE) {
-              createPerson()
+              createPerson(baseurl, formState, resetForm)
             }
             if (editingMode === EditingState.UPDATE) {
-              updatePerson(formState.id)
+              updatePerson(baseurl, formState, formState.id, resetForm)
             }
           }}
           onRequestClose={() => {
@@ -467,10 +473,13 @@ const Appledore: React.FC = (props: any) => {
         )}
 
         <TextInput
+          labelText="Filter..."
           onChange={e => {
             setQuery(e.target.value)
           }}
         />
+
+        <div style={{ marginBottom: "30px" }} />
 
         {loggedIn && (
           <LTable
@@ -483,7 +492,7 @@ const Appledore: React.FC = (props: any) => {
               setLoading(true)
 
               const promises = selectedRawRowsData.map(data =>
-                deletePersonRequest(data),
+                deletePersonRequest(baseurl, data),
               )
 
               Promise.all(promises).then(() => {
