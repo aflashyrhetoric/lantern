@@ -36,7 +36,8 @@ export async function getStaticProps() {
 
 const Appledore: React.FC = (props: any) => {
   const { baseurl } = props
-  const [people, setPeople] = useState([])
+  const [people, setPeople] = useState<Person[]>([])
+  const [query, setQuery] = useState("")
 
   const [authType, setAuthType] = useState<AuthType>(AuthType.Login)
   const [showLogin, setShowLogin] = useState(false)
@@ -55,6 +56,19 @@ const Appledore: React.FC = (props: any) => {
   const [editingMode, setEditingMode] = useState<EditingState>(
     EditingState.CREATE,
   )
+
+  const filteredPeople = people.filter(person => {
+    if (query === "") {
+      return true
+    }
+    if (people.length === 0) return []
+
+    const { first_name, last_name, career, email } = person
+    return [first_name, last_name, career, email]
+      .map(p => (p ? p.toLowerCase().trim() : p))
+      .join()
+      .includes(query.toLowerCase().trim())
+  })
 
   const initialize = () => {
     const t = Cookies.get("logged_in")
@@ -385,9 +399,7 @@ const Appledore: React.FC = (props: any) => {
                 invalid={invalidFields.includes("email")}
                 invalidText="A valid value is required"
                 labelText="Email"
-                onChange={e =>
-                  handleTextInputChange(e, "email")
-                }
+                onChange={e => handleTextInputChange(e, "email")}
               />
               <div style={{ marginBottom: "10px" }} />
               <TextInput
@@ -454,6 +466,12 @@ const Appledore: React.FC = (props: any) => {
           </ButtonSet>
         )}
 
+        <TextInput
+          onChange={e => {
+            setQuery(e.target.value)
+          }}
+        />
+
         {loggedIn && (
           <LTable
             title="Contacts"
@@ -474,10 +492,10 @@ const Appledore: React.FC = (props: any) => {
                 window.location.reload()
               })
             }}
-            rawRowData={people || []}
+            rawRowData={filteredPeople || []}
             rowData={
               people
-                ? people.map(p => ({
+                ? filteredPeople.map(p => ({
                     ...p,
                     id: `${p.id}`,
                     dob:

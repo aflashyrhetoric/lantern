@@ -33,7 +33,7 @@ const LHeader = ({ logout = null, loggedIn }: Props) => {
               onClick={onClickSideNavExpand}
               isActive={isSideNavExpanded}
             />
-            <HeaderName href="/" prefix="LANTERN"></HeaderName>
+            <HeaderName href="/" prefix="LANTERN"> </HeaderName>
             <HeaderNavigation aria-label="Lantern">
               <HeaderMenuItem href="/scan-products">
                 scan products
