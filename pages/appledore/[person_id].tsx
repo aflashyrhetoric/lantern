@@ -306,6 +306,11 @@ const Dossier = props => {
               ))}
             </div>
           )}
+
+          <h2>Relationships</h2>
+          {person?.relationships?.map(r => (
+            <p>{r.relationship_type}</p>
+          ))}
         </div>
       )}
       <Modal

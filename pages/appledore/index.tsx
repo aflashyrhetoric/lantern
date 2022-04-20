@@ -63,7 +63,7 @@ const Appledore: React.FC = (props: any) => {
     EditingState.CREATE,
   )
 
-  const filteredPeople = people.filter(person => {
+  const filteredPeople = people?.filter(person => {
     if (query === "") {
       return true
     }

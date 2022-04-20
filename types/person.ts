@@ -1,5 +1,6 @@
 import { Note } from "./note"
 import { PressurePoint } from "./pressure-point"
+import { Relationship } from "./relationship"
 
 export interface Person {
   id: number
@@ -12,4 +13,5 @@ export interface Person {
   dob: string
   notes: Note[]
   pressure_points: PressurePoint[]
+  relationships: Relationship[]
 }
