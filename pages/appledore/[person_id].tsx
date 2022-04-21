@@ -246,7 +246,7 @@ const Dossier = props => {
           )}
 
           <div style={{ marginBottom: "20px" }} />
-          {!person.notes || (person.notes.length == 0 && <p>No notes</p>)}
+          {!person.notes || (person.notes.length == 0 && <p>No notes.</p>)}
           {person.notes && person.notes.length > 0 && (
             <div className={styles.recordsList}>
               {person.notes.map(n => (
@@ -264,7 +264,7 @@ const Dossier = props => {
               ))}
             </div>
           )}
-          <br />
+          <div style={{ marginBottom: "50px" }} />
           <h2>Pressure Points</h2>
           <TextArea
             labelText="Enter pressure point"
@@ -286,9 +286,11 @@ const Dossier = props => {
               </Button>
             </ButtonSet>
           )}
-          <div style={{ marginBottom: "20px" }} />
+          <div style={{ marginBottom: "50px" }} />
           {!person.pressure_points ||
-            (person.pressure_points.length == 0 && <p>No pressure_points</p>)}
+            (person.pressure_points.length == 0 && (
+              <p>No pressure points. Waow.</p>
+            ))}
           {person.pressure_points && person.pressure_points.length > 0 && (
             <div className={styles.recordsList}>
               {person.pressure_points.map(n => (
@@ -306,8 +308,12 @@ const Dossier = props => {
               ))}
             </div>
           )}
+          <div style={{ marginBottom: "50px" }} />
 
           <h2>Relationships</h2>
+          {person?.relationships?.length === 0 && (
+            <p>No relationships. Aw :C</p>
+          )}
           {person?.relationships?.map(r => (
             <p>{r.relationship_type}</p>
           ))}

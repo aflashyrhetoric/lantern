@@ -7,7 +7,7 @@ import TextField from "@material-ui/core/TextField"
 import Typography from "@material-ui/core/Typography"
 import InterestChart from "./compound-interest-chart"
 
-const compound = require("compound-interest")
+// const compound = require("compound-interest")
 
 interface CompoundInterestCalculatorProps {}
 
@@ -31,7 +31,9 @@ const calculateInterest = (
     years, // years
   }
 
-  return compound.verbose(opts)
+  return 0
+
+  // return compound.verbose(opts)
 }
 
 const CompoundInterestCalculator: React.FC<CompoundInterestCalculatorProps> =
