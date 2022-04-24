@@ -26,17 +26,24 @@ import Page from "../../global/Page"
 import { endpoint } from "../../helpers/api"
 import { EditingState, Person } from "../../types"
 import { getBaseURL } from "../../constants"
-import { createPerson, updatePerson } from "../api/person"
+import { updatePerson } from "../api/person"
 import getHandlers from "../../helpers/form/eventHandlers"
 import Validations from "../../helpers/form/validation"
 
 const styles = require("./styles.module.scss")
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   return {
     props: {
       baseurl: getBaseURL(process.env.LANTERN_ENV),
     },
+  }
+}
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
   }
 }
 
