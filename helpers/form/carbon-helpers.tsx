@@ -2,6 +2,7 @@ import React from "react"
 import { startCase } from "lodash"
 import moment from "moment"
 import { SelectItem } from "carbon-components-react"
+import { SelectItemType } from "../../types/carbon"
 
 // carbon-helpers.ts
 // These helpers aim to normalize some of Carbon's quirks and speed up common operations
