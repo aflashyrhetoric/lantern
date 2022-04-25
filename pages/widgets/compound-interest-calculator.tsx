@@ -31,7 +31,7 @@ const calculateInterest = (
     years, // years
   }
 
-  return 0
+  return [0]
 
   // return compound.verbose(opts)
 }
