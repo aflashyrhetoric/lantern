@@ -3,6 +3,20 @@ export enum RelationshipType {
   Friend = "friend",
   Partner = "partner",
   Coworker = "coworker",
+  Colleague = "colleague",
+  Acquaintance = "acquaintance",
+  Cousin = "cousin",
+  Family = "family",
+
+  // Dramatic
+  Rival = "rival",
+  Enemy = "enemy",
+
+  Other = "other",
+
+  // Directional relationships
+  // Aunt = "aunt",
+  // Uncle = "uncle",
 }
 
 export type Relationship = {

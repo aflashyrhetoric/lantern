@@ -75,15 +75,17 @@ const Dossier = props => {
       mode: "cors",
     })
       .then(response => {
-        console.log(response)
         if (response.status !== 403) {
           return response.json()
         } else {
           window.location.replace("/appledore")
         }
       })
-      .then(data => {
-        setPerson(data.data)
+      .then(response => {
+        const {
+          data: { person },
+        } = response
+        setPerson(person)
         setLoading(false)
       })
       .catch(() => {

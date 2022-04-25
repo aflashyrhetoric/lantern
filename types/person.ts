@@ -13,5 +13,7 @@ export interface Person {
   dob: string
   notes: Note[]
   pressure_points: PressurePoint[]
+  relationship_to_user: Relationship
+  relationship_to_user_through_person_id: number
   relationships: Relationship[]
 }

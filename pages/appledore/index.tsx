@@ -4,13 +4,16 @@ import moment from "moment"
 import {
   Button,
   ButtonSet,
-  Modal,
-  Loading,
-  Form,
-  FormGroup,
-  TextInput,
+  Checkbox,
   DatePicker,
   DatePickerInput,
+  Form,
+  FormGroup,
+  Loading,
+  Modal,
+  Select,
+  SelectItem,
+  TextInput,
 } from "carbon-components-react"
 
 import Page from "../../global/Page"
@@ -23,6 +26,9 @@ import { createPerson, deletePerson, updatePerson } from "../api/person"
 import ContactsTable from "../../src/appledore/contacts-table"
 import LoginModal from "../../src/appledore/login-modal"
 import { logout } from "../../src/appledore/auth"
+import { RelationshipType } from "../../types/relationship"
+import { enumToSelectItemsWithValuesAsKeys } from "../../helpers/form/carbon-helpers"
+import { getName } from "../../helpers/person"
 
 export async function getStaticProps() {
   return {
@@ -48,6 +54,8 @@ const Appledore: React.FC = (props: any) => {
 
   // Form hooks
   const [formState, setFormState] = useState<Person>(null)
+  const [knowsPersonThroughSomeoneElse, setKnowsPersonThroughSomeoneElse] =
+    useState(false)
   const [invalidFields, setInvalidFields] = useState([])
   const [editingMode, setEditingMode] = useState<EditingState>(
     EditingState.CREATE,
@@ -83,8 +91,8 @@ const Appledore: React.FC = (props: any) => {
       mode: "cors",
     })
       .then(response => response.json())
-      .then(data => {
-        setPeople(data.data)
+      .then(response => {
+        setPeople(response.data)
         setLoading(false)
       })
   }
@@ -304,6 +312,67 @@ const Appledore: React.FC = (props: any) => {
                   type="text"
                 />
               </DatePicker>
+
+              <div style={{ display: "flex" }}>
+                <div style={{ width: "50%" }}>
+                  <Select
+                    id="relationship-to-user"
+                    labelText="What is this person's relationship to you?"
+                    value={formState?.relationship_to_user || ""}
+                    onChange={e => {
+                      setFormState({
+                        ...formState,
+                        relationship_to_user: e.target.value,
+                      })
+                    }}
+                    style={{ width: "100%" }}
+                  >
+                    <SelectItem value="" text="Select a field..." />
+                    {enumToSelectItemsWithValuesAsKeys(RelationshipType)}
+                  </Select>
+                </div>
+                <div style={{ width: "50%" }}></div>
+              </div>
+              <div style={{ marginBottom: "20px" }} />
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{ width: "48%" }}>
+                  <Checkbox
+                    id="knows-through-someone-else"
+                    labelText="I met this person through someone else."
+                    checked={knowsPersonThroughSomeoneElse}
+                    onChange={() => {
+                      setKnowsPersonThroughSomeoneElse(
+                        !knowsPersonThroughSomeoneElse,
+                      )
+                    }}
+                  />
+                </div>
+                <div style={{ width: "48%" }}>
+                  {knowsPersonThroughSomeoneElse && (
+                    <Select
+                      id="intermediate-person"
+                      labelText="Who introduced you to this person?"
+                      value={
+                        formState?.relationship_to_user_through_person_id || ""
+                      }
+                      onChange={e => {
+                        setFormState({
+                          ...formState,
+                          relationship_to_user_through_person_id: Number(
+                            e.target.value,
+                          ),
+                        })
+                      }}
+                      style={{ width: "100%" }}
+                    >
+                      <SelectItem value="" text="Select a field..." />
+                      {people?.map(person => (
+                        <SelectItem value={person.id} text={getName(person)} />
+                      ))}
+                    </Select>
+                  )}
+                </div>
+              </div>
             </FormGroup>
           </Form>
         </Modal>
