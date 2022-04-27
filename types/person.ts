@@ -1,6 +1,6 @@
 import { Note } from "./note"
 import { PressurePoint } from "./pressure-point"
-import { Relationship } from "./relationship"
+import { Relationship, RelationshipHydrated } from "./relationship"
 
 export interface Person {
   id: number
@@ -15,5 +15,5 @@ export interface Person {
   pressure_points: PressurePoint[]
   relationship_to_user: Relationship
   relationship_to_user_through_person_id: number
-  relationships: Relationship[]
+  relationships: RelationshipHydrated[]
 }

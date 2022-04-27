@@ -1,3 +1,5 @@
+import { Person } from "./person"
+
 export enum RelationshipType {
   Spouse = "spouse",
   Friend = "friend",
@@ -24,6 +26,13 @@ export type Relationship = {
   person_one_id: number
   person_two_id: number
   relationship_type: RelationshipType
+}
+
+export type RelationshipHydrated = {
+  id: number
+  person_id: number
+  relationship_type: RelationshipType
+  person: Person
 }
 
 // X is the spouse of Y and Y is the spouse of X, so "spouse" isBidirectional

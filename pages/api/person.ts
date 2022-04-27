@@ -1,5 +1,19 @@
-import { endpoint } from "../../helpers/api"
+import { endpoint } from "@/helpers/api"
+import { Person } from "@/types/person"
 import moment from "moment"
+
+export type UserData = {
+  people: Person[]
+}
+
+export type PersonPageResponseData = {
+  person: Person
+  user_data: UserData
+}
+
+export type PersonPageResponse = Response & {
+  data: PersonPageResponseData
+}
 
 export const createPerson = (baseurl, payload, resetForm = () => {}) => {
   fetch(endpoint(baseurl, "/people"), {

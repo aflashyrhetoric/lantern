@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import Page from "../../global/Page"
 
 import { createMuiTheme } from "@material-ui/core/styles"
-import { endpoint } from "../../helpers/api"
+import { endpoint } from "@/helpers/api"
 import { getBaseURL } from "../../constants"
 
 export async function getStaticProps() {

@@ -1,4 +1,4 @@
-import { endpoint } from "../../helpers/api"
+import { endpoint } from "@/helpers/api"
 import Cookies from "js-cookie"
 import { LoginForm } from "../../types"
 

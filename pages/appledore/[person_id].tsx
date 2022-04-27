@@ -1,34 +1,29 @@
 import React, { useState, useEffect } from "react"
 import Cookies from "js-cookie"
-import moment from "moment"
 import { useRouter } from "next/router"
 
 import {
-  ButtonSet,
   Button,
-  DatePicker,
-  DatePickerInput,
-  Form,
-  FormGroup,
-  Loading,
-  Modal,
   StructuredListWrapper,
   StructuredListHead,
   StructuredListRow,
   StructuredListBody,
   StructuredListCell,
-  TextArea,
-  TextInput,
 } from "carbon-components-react"
-import { TrashCan20 } from "@carbon/icons-react"
 
-import Page from "../../global/Page"
-import { endpoint } from "../../helpers/api"
-import { EditingState, Person } from "../../types"
-import { getBaseURL } from "../../constants"
-import { updatePerson } from "../api/person"
-import getHandlers from "../../helpers/form/eventHandlers"
-import Validations from "../../helpers/form/validation"
+import Page from "@/global/Page"
+import { EditingState, Person } from "@/types"
+
+import { getBaseURL } from "@/constants"
+import { PersonPageResponse } from "@/api/person"
+
+import { endpoint } from "@/helpers/api"
+import getHandlers from "@/helpers/form/eventHandlers"
+
+import PersonFormModal from "@/lantern/appledore/person-form"
+import PersonNotes from "@/lantern/appledore/person-notes"
+import PersonPressurePoints from "@/lantern/appledore/person-pressure-points"
+import PersonRelationships from "@/lantern/appledore/person-relationships"
 
 const styles = require("./styles.module.scss")
 
@@ -52,9 +47,9 @@ const Dossier = props => {
   const router = useRouter()
   const { person_id } = router.query
 
-  const [editingMode, setEditingMode] = useState(EditingState.INACTIVE)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [person, setPerson] = useState<Person>(null)
+  const [allPeople, setAllPeople] = useState<Person[]>([])
   const [formState, setFormState] = useState<Person>(person || ({} as Person))
   const [invalidFields, setInvalidFields] = useState<string[]>([])
   const [noteForm, setNoteForm] = useState("")
@@ -69,28 +64,32 @@ const Dossier = props => {
     setInvalidFields,
   )
 
-  const loadData = () =>
-    fetch(endpoint(baseurl, `/people/${person_id}`), {
-      credentials: "include",
-      mode: "cors",
-    })
-      .then(response => {
-        if (response.status !== 403) {
-          return response.json()
-        } else {
-          window.location.replace("/appledore")
-        }
+  const loadData = async () => {
+    try {
+      let response = await fetch(endpoint(baseurl, `/people/${person_id}`), {
+        credentials: "include",
+        mode: "cors",
       })
-      .then(response => {
-        const {
-          data: { person },
-        } = response
-        setPerson(person)
-        setLoading(false)
-      })
-      .catch(() => {
+
+      if (response.status === 403) {
         window.location.replace("/appledore")
-      })
+      }
+
+      response = await response.json()
+
+      const {
+        data: { person, user_data },
+      } = response as PersonPageResponse
+
+      setPerson(person)
+      setFormState(person)
+      setAllPeople(user_data?.people?.filter(p => p.id !== person.id))
+
+      setLoading(false)
+    } catch (err) {
+      window.location.replace("/appledore")
+    }
+  }
 
   useEffect(() => {
     const t = Cookies.get("logged_in")
@@ -103,17 +102,18 @@ const Dossier = props => {
     }
   }, [person_id])
 
-  const addNote = () => {
+  const addNote = async () => {
     setLoading(true)
 
-    fetch(endpoint(baseurl, `/notes/${person_id}`), {
+    await fetch(endpoint(baseurl, `/notes/${person_id}`), {
       method: "POST",
       body: JSON.stringify({ text: noteForm, person_id } as any),
-    }).then(data => {
-      setNoteForm("")
-      loadData()
-      setLoading(false)
     })
+
+    setNoteForm("")
+    loadData()
+
+    setLoading(false)
   }
 
   const deleteNote = (id: number) => {
@@ -184,7 +184,6 @@ const Dossier = props => {
               onClick={() => {
                 setModalIsOpen(!modalIsOpen)
                 setFormState(person || ({} as Person))
-                setEditingMode(EditingState.UPDATE)
               }}
             >
               Edit
@@ -230,231 +229,47 @@ const Dossier = props => {
               </StructuredListRow>
             </StructuredListBody>
           </StructuredListWrapper>
-
-          <h2>Notes</h2>
-          <TextArea
-            labelText="Enter new note"
-            value={noteForm}
-            onChange={e => setNoteForm(e.target.value)}
-          />
-
-          {noteForm.length > 0 && (
-            <ButtonSet>
-              <Button kind="secondary" onClick={e => setNoteForm("")}>
-                Cancel
-              </Button>
-              <Button
-                kind="primary"
-                onClick={() => {
-                  addNote()
-                }}
-              >
-                Save
-              </Button>
-            </ButtonSet>
-          )}
-
-          <div style={{ marginBottom: "20px" }} />
-          {!person.notes || (person.notes.length == 0 && <p>No notes.</p>)}
-          {person.notes && person.notes.length > 0 && (
-            <div className={styles.recordsList}>
-              {person.notes.map(n => (
-                <div>
-                  {n.text}{" "}
-                  <span>
-                    <TrashCan20
-                      className={styles.iconRed}
-                      onClick={() => {
-                        deleteNote(n.id)
-                      }}
-                    />
-                  </span>
-                </div>
-              ))}
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ width: "48%" }}>
+              <PersonNotes
+                person={person}
+                noteForm={noteForm}
+                setNoteForm={setNoteForm}
+                addNote={addNote}
+                deleteNote={deleteNote}
+              />
             </div>
-          )}
-          <div style={{ marginBottom: "50px" }} />
-          <h2>Pressure Points</h2>
-          <TextArea
-            labelText="Enter pressure point"
-            value={pressurePointForm}
-            onChange={e => setPressurePointForm(e.target.value)}
-          />
-          {pressurePointForm.length > 0 && (
-            <ButtonSet>
-              <Button kind="secondary" onClick={e => setPressurePointForm("")}>
-                Cancel
-              </Button>
-              <Button
-                kind="primary"
-                onClick={() => {
-                  addPressurePoint()
-                }}
-              >
-                Save
-              </Button>
-            </ButtonSet>
-          )}
-          <div style={{ marginBottom: "50px" }} />
-          {!person.pressure_points ||
-            (person.pressure_points.length == 0 && (
-              <p>No pressure points. Waow.</p>
-            ))}
-          {person.pressure_points && person.pressure_points.length > 0 && (
-            <div className={styles.recordsList}>
-              {person.pressure_points.map(n => (
-                <div>
-                  {n.description}{" "}
-                  <span>
-                    <TrashCan20
-                      className={styles.iconRed}
-                      onClick={() => {
-                        deletePressurePoint(n.id)
-                      }}
-                    />
-                  </span>
-                </div>
-              ))}
+            <div style={{ width: "48%" }}>
+              <PersonPressurePoints
+                person={person}
+                pressurePointForm={pressurePointForm}
+                setPressurePointForm={setPressurePointForm}
+                addPressurePoint={addPressurePoint}
+                deletePressurePoint={deletePressurePoint}
+              />
             </div>
-          )}
-          <div style={{ marginBottom: "50px" }} />
-
-          <h2>Relationships</h2>
-          {person?.relationships?.length === 0 && (
-            <p>No relationships. Aw :C</p>
-          )}
-          {person?.relationships?.map(r => (
-            <p>{r.relationship_type}</p>
-          ))}
+          </div>
+          <PersonRelationships
+            baseurl={baseurl}
+            person={person}
+            people={allPeople}
+            loadData={loadData}
+          />
         </div>
       )}
-      <Modal
-        open={modalIsOpen}
-        modalHeading={
-          editingMode === EditingState.CREATE ? "Add contact" : "Update contact"
-        }
-        primaryButtonText={
-          editingMode === EditingState.CREATE ? "Save" : "Update"
-        }
-        secondaryButtonText="Cancel"
-        selectorPrimaryFocus="#first-name"
-        onRequestSubmit={() => {
-          setLoading(true)
-          if (editingMode === EditingState.UPDATE) {
-            updatePerson(baseurl, formState, formState.id, resetForm)
-          }
-        }}
-        onRequestClose={() => {
-          resetForm()
-          setModalIsOpen(false)
-        }}
-        onBlur={() => {
-          resetForm()
-          setModalIsOpen(false)
-        }}
-      >
-        {/* Loading spinner for table */}
-        <Loading active={loading} />
-
-        <Form className="some-class" onSubmit={() => {}}>
-          <FormGroup legendText="Basic Information">
-            <TextInput
-              id="first-name"
-              name="first_name"
-              value={(formState && formState.first_name) || ""}
-              placeholder="Thomas"
-              invalid={invalidFields.includes("first_name")}
-              invalidText="A valid value is required"
-              labelText="First name"
-              onChange={e =>
-                handleTextInputChange(e, "first_name", [Validations.IsRequired])
-              }
-            />
-            <div style={{ marginBottom: "10px" }} />
-            <TextInput
-              id="last-name"
-              name="last_name"
-              value={(formState && formState.last_name) || ""}
-              placeholder="Shelby"
-              invalid={invalidFields.includes("last_name")}
-              invalidText="A valid value is required"
-              labelText="Last name"
-              onChange={e => handleTextInputChange(e, "last_name", [])}
-            />
-            <div style={{ marginBottom: "10px" }} />
-            <TextInput
-              id="career"
-              name="career"
-              value={(formState && formState.career) || ""}
-              placeholder="Engineer"
-              invalid={invalidFields.includes("career")}
-              invalidText="A valid value is required"
-              labelText="Career"
-              onChange={e => handleTextInputChange(e, "career", [])}
-            />
-            <div style={{ marginBottom: "10px" }} />
-            <TextInput
-              id="mobile"
-              name="mobile"
-              value={(formState && formState.mobile) || ""}
-              placeholder="555-1242"
-              invalid={invalidFields.includes("mobile")}
-              invalidText="A valid value is required"
-              labelText="Mobile"
-              onChange={e => handlePhoneNumberInputChange(e, "mobile")}
-            />
-            <div style={{ marginBottom: "10px" }} />
-            <TextInput
-              id="email"
-              name="email"
-              value={(formState && formState.email) || ""}
-              placeholder="Enter email"
-              invalid={invalidFields.includes("email")}
-              invalidText="A valid value is required"
-              labelText="Email"
-              onChange={e => handleTextInputChange(e, "email")}
-            />
-            <div style={{ marginBottom: "10px" }} />
-            <TextInput
-              id="address"
-              name="address"
-              value={(formState && formState.address) || ""}
-              placeholder="Enter address"
-              invalid={invalidFields.includes("address")}
-              invalidText="A valid value is required"
-              labelText="Address"
-              onChange={e => handleTextInputChange(e, "address", [])}
-            />
-            <div style={{ marginBottom: "10px" }} />
-            <DatePicker
-              id="date-picker"
-              datePickerType="single"
-              dateFormat="Y-m-d"
-              style={{ marginBottom: "10px" }}
-              value={
-                formState &&
-                formState.dob &&
-                moment.utc(formState.dob).format("YYYY-MM-DD")
-              }
-              onChange={event => {
-                setFormState({
-                  ...formState,
-                  dob: moment(event[0]).format("YYYY-MM-DD"),
-                })
-              }}
-            >
-              <DatePickerInput
-                id="date-picker-input-id"
-                invalid={invalidFields.includes("dob")}
-                iconDescription="Select a dob"
-                labelText="DOB"
-                placeholder="yyyy-mm-dd"
-                type="text"
-              />
-            </DatePicker>
-          </FormGroup>
-        </Form>
-      </Modal>
+      {person && (
+        <PersonFormModal
+          baseurl={baseurl}
+          modalOpen={modalIsOpen}
+          setModalOpen={setModalIsOpen}
+          loading={loading}
+          setLoading={setLoading}
+          resetForm={resetForm}
+          editingMode={EditingState.UPDATE}
+          person={person}
+          people={allPeople}
+        />
+      )}
     </Page>
   )
 }

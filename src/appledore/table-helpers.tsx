@@ -10,7 +10,7 @@ export const peopleToRowData = (people: Person[]) => {
   return people.map(p => ({
     ...p,
     id: `${p.id}`,
-    dob: p.dob !== null ? moment.utc(p.dob).format("YYYY-MM-DD") : "-",
+    dob: p.dob ? moment(p.dob).format("YYYY-MM-DD") : "-",
     link: (
       <span style={{ cursor: "pointer" }}>
         <Link href={`/appledore/${encodeURIComponent(p.id)}`} passHref>
